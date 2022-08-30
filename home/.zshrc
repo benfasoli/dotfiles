@@ -23,6 +23,7 @@ alias showdesktop="defaults write com.apple.finder CreateDesktop true && killall
 
 # preempt PATH with brew installs
 eval "$(brew shellenv -)"
+export C_INCLUDE_PATH="/opt/homebrew/opt/python3/Frameworks/Python.framework/Headers"
 
 # source starship prompt
 eval "$(starship init zsh)"
