@@ -1,5 +1,8 @@
 #!/bin/zsh
 
+# increase maximum number of files that can be open concurrently
+ulimit -S -n 2048
+
 # disable parallel limits in MacOS for python multiprocessing
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
