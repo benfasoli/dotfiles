@@ -16,8 +16,22 @@ unsetopt AUTO_CD
 # avoid creating .pyc files during development
 PYTHONDONTWRITEBYTECODE=1
 
-# command aliases
+# show tree view of git branch / commit history
 alias githistory="git log --oneline --decorate --graph --all"
+
+# prune local branches not on remote
+gitprunelocal() {
+    git fetch --prune
+    BRANCHES=$(git for-each-ref --format '%(refname) %(upstream:track)' refs/heads | awk '$2 == "[gone]" {sub("refs/heads/", "", $1); print $1}')
+
+    TEMPFILE=$(mktemp)
+    echo $BRANCHES > $TEMPFILE
+    vim $TEMPFILE
+    while read BRANCH; do
+        git branch -D $BRANCH
+    done < $TEMPFILE
+}
+
 alias ls="exa --icons --time-style=long-iso --git --color-scale --long"
 alias tree="ls --tree --git-ignore"
 
