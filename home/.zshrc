@@ -20,7 +20,7 @@ PYTHONDONTWRITEBYTECODE=1
 alias githistory="git log --oneline --decorate --graph --all"
 
 # prune local branches not on remote
-gitprunelocal() {
+gitclean() {
     git fetch --prune
     BRANCHES=$(git for-each-ref --format '%(refname) %(upstream:track)' refs/heads | awk '$2 == "[gone]" {sub("refs/heads/", "", $1); print $1}')
 
@@ -41,6 +41,9 @@ alias showdesktop="defaults write com.apple.finder CreateDesktop true && killall
 # preempt PATH with brew installs
 eval "$(brew shellenv -)"
 export C_INCLUDE_PATH="/opt/homebrew/opt/python3/Frameworks/Python.framework/Headers"
+
+# preempt PATH with user-scoped installs
+export PATH="$HOME/.local/bin:$PATH"
 
 # source starship prompt
 eval "$(starship init zsh)"
