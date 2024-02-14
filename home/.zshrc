@@ -26,21 +26,20 @@ gitclean() {
     BRANCHES=$(git for-each-ref --format '%(refname) %(upstream:track)' refs/heads | awk '$2 == "[gone]" {sub("refs/heads/", "", $1); print $1}')
 
     TEMPFILE=$(mktemp)
-    echo $BRANCHES > $TEMPFILE
+    echo $BRANCHES >$TEMPFILE
     vim $TEMPFILE
     while read BRANCH; do
         git branch -D $BRANCH
-    done < $TEMPFILE
+    done <$TEMPFILE
 }
 
-alias ls="exa --icons --time-style=long-iso --git --color-scale --long"
-alias tree="ls --tree --git-ignore"
-
+alias ls="lsd"
+alias python="python3"
 alias hidedesktop="defaults write com.apple.finder CreateDesktop false && killall Finder"
 alias showdesktop="defaults write com.apple.finder CreateDesktop true && killall Finder"
 
 # preempt PATH with brew installs
-eval "$(brew shellenv -)"
+eval "$(/opt/homebrew/bin/brew shellenv)"
 export C_INCLUDE_PATH="/opt/homebrew/opt/python3/Frameworks/Python.framework/Headers"
 
 # preempt PATH with user-scoped installs
