@@ -34,7 +34,6 @@ gitclean() {
 }
 
 alias ls="lsd"
-alias python="python3"
 alias hidedesktop="defaults write com.apple.finder CreateDesktop false && killall Finder"
 alias showdesktop="defaults write com.apple.finder CreateDesktop true && killall Finder"
 
