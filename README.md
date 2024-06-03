@@ -19,3 +19,5 @@
     ```
 1. Open System Preferences > Keyboard. Set repeat rate to fast. Set delay until repeat to short.
 1. Open System Preferences > Trackpad. Enable tap to click.
+1. Open System Preferences > Desktop & Dock. Disable recent apps.
+1. [Generate SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and setup GitHub auth
