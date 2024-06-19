@@ -11,14 +11,11 @@ export PIP_REQUIRE_VIRTUALENV=true
 export PIPENV_VENV_IN_PROJECT=1
 export POETRY_VIRTUALENVS_IN_PROJECT=1
 
-# disable autocd
-unsetopt AUTO_CD
-
 # avoid creating .pyc files during development
 export PYTHONDONTWRITEBYTECODE=1
 
-# show tree view of git branch / commit history
-alias githistory="git log --oneline --decorate --graph --all"
+# disable autocd
+unsetopt AUTO_CD
 
 # prune local branches not on remote
 gitclean() {
@@ -32,6 +29,20 @@ gitclean() {
         git branch -D $BRANCH
     done <$TEMPFILE
 }
+
+# load environment variables from dotenv file
+loadenv() {
+    local dotenv=$1
+    if [ ! -e "$dotenv" ]; then
+        echo "❌ $dotenv not found"
+        return 1
+    fi
+    export $(grep -v '^#' $1 | xargs)
+    echo "✅ Set environment variables from $dotenv"
+}
+
+# show tree view of git branch / commit history
+alias githistory="git log --oneline --decorate --graph --all"
 
 alias ls="lsd"
 alias hidedesktop="defaults write com.apple.finder CreateDesktop false && killall Finder"
