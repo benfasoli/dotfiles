@@ -32,13 +32,15 @@ gitclean() {
 
 # load environment variables from dotenv file
 loadenv() {
-    local dotenv=$1
-    if [ ! -e "$dotenv" ]; then
-        echo "❌ $dotenv not found"
+    local DOTENV=$1
+    if [ ! -e "$DOTENV" ]; then
+        echo "❌ $DOTENV not found"
         return 1
     fi
-    export $(grep -v '^#' $1 | xargs)
-    echo "✅ Set environment variables from $dotenv"
+    export $(grep -v '^#' $DOTENV | xargs)
+    grep -v '^#' $DOTENV
+    echo
+    echo "✅ Set environment variables from $DOTENV"
 }
 
 # show tree view of git branch / commit history
