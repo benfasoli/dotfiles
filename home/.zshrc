@@ -32,7 +32,7 @@ gitclean() {
 
 # load environment variables from dotenv file
 loadenv() {
-    local DOTENV=$1
+    local DOTENV="${1:-.env}"
     if [ ! -e "$DOTENV" ]; then
         echo "❌ $DOTENV not found"
         return 1
@@ -59,3 +59,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # source starship prompt
 eval "$(starship init zsh)"
+
+# source uv
+. "$HOME/.cargo/env"
