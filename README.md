@@ -18,6 +18,7 @@
 1. Set terminal font to Fira Code Nerdfont.
 1. Copy dotfile configs
    ```bash
+   cp home/.gitconfig ~/
    cp home/.vimrc ~/
    cp home/.zshrc ~/
    ```
