@@ -1,7 +1,12 @@
-# This is Git's per-user configuration file.
 [user]
-# Please adapt and uncomment the following lines:
 name = Ben Fasoli
 email = ben.fasoli@redwoodmaterials.com
+
+[init]
+defaultBranch = main
+
+[core]
+editor = vim
+
 [push]
 autoSetupRemote = true
