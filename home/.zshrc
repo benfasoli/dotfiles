@@ -3,6 +3,9 @@
 # increase maximum number of files that can be open concurrently
 ulimit -S -n 2048
 
+# git default text editor
+export GIT_EDITOR=vim
+
 # disable parallel limits in MacOS for python multiprocessing
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
@@ -47,6 +50,9 @@ loadenv() {
 alias githistory="git log --oneline --decorate --graph --all"
 
 alias ls="lsd"
+alias venv="source .venv/bin/activate"
+
+# desktop cleanup utils for screen sharing
 alias hidedesktop="defaults write com.apple.finder CreateDesktop false && killall Finder"
 alias showdesktop="defaults write com.apple.finder CreateDesktop true && killall Finder"
 
