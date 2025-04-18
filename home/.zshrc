@@ -17,6 +17,14 @@ export PYTHONDONTWRITEBYTECODE=1
 # disable autocd
 unsetopt AUTO_CD
 
+# stop running containers and prune docker artifacts
+dockerclean() {
+    docker stop $(docker ps -aq)
+    docker container prune --force
+    docker image prune --all --force
+    docker system prune --force --volumes
+}
+
 # prune local branches not on remote
 gitclean() {
     git fetch --prune
