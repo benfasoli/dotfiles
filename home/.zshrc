@@ -3,6 +3,9 @@
 # increase maximum number of files that can be open concurrently
 ulimit -S -n 2048
 
+# set git text editor for commit messages
+export GIT_EDITOR=vim
+
 # disable parallel limits in MacOS for python multiprocessing
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
@@ -29,7 +32,6 @@ dockerclean() {
 gitclean() {
     git fetch --prune
     BRANCHES=$(git for-each-ref --format '%(refname) %(upstream:track)' refs/heads | awk '$2 == "[gone]" {sub("refs/heads/", "", $1); print $1}')
-
     TEMPFILE=$(mktemp)
     echo $BRANCHES >$TEMPFILE
     vim $TEMPFILE
@@ -40,7 +42,8 @@ gitclean() {
 
 # load environment variables from dotenv file
 loadenv() {
-    local DOTENV="${1:-.env}"
+    local DOTENV=${1:-.env}
+    echo $DOTENV
     if [ ! -e "$DOTENV" ]; then
         echo "❌ $DOTENV not found"
         return 1
@@ -51,13 +54,28 @@ loadenv() {
     echo "✅ Set environment variables from $DOTENV"
 }
 
+# format github PR URL as markdown link
+prshare() {
+    local url=$1
+    if [[ -z "$url" ]]; then
+        echo "Usage: prshare <github-pr-url>" >&2
+        return 1
+    fi
+    if [[ ! "$url" =~ github\.com/([^/]+)/([^/]+)/pull/([0-9]+) ]]; then
+        echo "Invalid GitHub PR URL" >&2
+        return 1
+    fi
+    local repo="${match[2]}"
+    local pr_num="${match[3]}"
+    local title=$(gh pr view "$url" --json title --jq '.title')
+    echo "[${repo}#${pr_num}](${url}): ${title}"
+}
+
 # show tree view of git branch / commit history
 alias githistory="git log --oneline --decorate --graph --all"
 
 alias ls="lsd"
-alias venv="source .venv/bin/activate"
 
-# desktop cleanup utils for screen sharing
 alias hidedesktop="defaults write com.apple.finder CreateDesktop false && killall Finder"
 alias showdesktop="defaults write com.apple.finder CreateDesktop true && killall Finder"
 
