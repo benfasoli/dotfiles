@@ -3,9 +3,6 @@
 # increase maximum number of files that can be open concurrently
 ulimit -S -n 2048
 
-# set git text editor for commit messages
-export GIT_EDITOR=vim
-
 # disable parallel limits in MacOS for python multiprocessing
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
