@@ -1,6 +1,7 @@
 tap "homebrew/bundle"
 tap "homebrew/cask-fonts"
 brew "awscli"
+brew "copilot-cli"
 brew "coreutils"
 brew "docker-compose"
 brew "gh"
