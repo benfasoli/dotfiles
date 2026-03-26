@@ -17,6 +17,6 @@ Ship the current changes as a pull request: $ARGUMENTS
      - "Fix structured log ingestion"
      - "Configure prometheus scraping for K8s services"
      - "Remove tag browser sidebar from monitor app"
-   - **Body** is a short ~2-3 sentence paragraph starting with "This diff ...". Omit test plans unless steps must be taken by reviewers.
+   - **Body** is a short ~2-3 sentence paragraph starting with "This diff ...". Omit test plans unless steps must be taken by reviewers. This should focus on WHY the changes were made and their impact rather than just describing the code changes.
 
 If any step fails, stop and report the error — do not continue.
