@@ -26,8 +26,8 @@
       "Bash(pwd *)",
       "Bash(tail *)",
       "Read(**/*.*)",
-      "WebFetch(domain:docs.anthropic.com)",
-      "WebFetch(domain:code.claude.com)"
+      "WebFetch",
+      "WebSearch"
     ],
     "deny": [],
     "ask": []
