@@ -25,7 +25,9 @@
       "Bash(npm run *)",
       "Bash(pwd *)",
       "Bash(tail *)",
-      "Read(**/*.*)",
+      "Edit",
+      "Read",
+      "Write",
       "WebFetch",
       "WebSearch"
     ],
