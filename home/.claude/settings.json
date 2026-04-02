@@ -1,8 +1,16 @@
 {
+  "alwaysThinkingEnabled": true,
   "attribution": {
     "commit": "",
     "pr": ""
   },
+  "enabledPlugins": {
+    "pyright-lsp@claude-plugins-official": true
+  },
+  "env": {
+    "CLAUDE_ENV_FILE": "/Users/ben.fasoli/.zshenv"
+  },
+  "model": "opus[1m]",
   "permissions": {
     "allow": [
       "Bash(cat *)",
@@ -31,12 +39,7 @@
       "WebFetch",
       "WebSearch"
     ],
-    "deny": [],
-    "ask": []
-  },
-  "model": "opus[1m]",
-  "enabledPlugins": {
-    "pyright-lsp@claude-plugins-official": true
-  },
-  "alwaysThinkingEnabled": true
+    "ask": [],
+    "deny": []
+  }
 }

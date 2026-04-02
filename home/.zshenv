@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 # increase maximum number of files that can be open concurrently
 ulimit -S -n 2048
 

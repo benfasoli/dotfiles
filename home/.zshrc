@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 # stop running containers and prune docker artifacts
 dockerclean() {
     docker stop $(docker ps -aq)
