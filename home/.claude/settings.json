@@ -12,7 +12,15 @@
   },
   "model": "opus[1m]",
   "permissions": {
-    "allow": ["Bash(*)", "Edit", "Read", "Write", "WebFetch", "WebSearch"],
+    "allow": [
+      "Bash(*)",
+      "Edit",
+      "Read",
+      "Search",
+      "Write",
+      "WebFetch",
+      "WebSearch"
+    ],
     "ask": ["Bash(rm -rf *)", "Bash(sudo  *)"],
     "deny": []
   }
