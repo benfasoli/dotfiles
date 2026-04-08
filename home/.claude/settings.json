@@ -12,34 +12,8 @@
   },
   "model": "opus[1m]",
   "permissions": {
-    "allow": [
-      "Bash(cat *)",
-      "Bash(find *)",
-      "Bash(echo *)",
-      "Bash(gh pr view *)",
-      "Bash(gh repo view *)",
-      "Bash(git branch *)",
-      "Bash(git checkout *)",
-      "Bash(git diff *)",
-      "Bash(git fetch *)",
-      "Bash(git log *)",
-      "Bash(git pull *)",
-      "Bash(git show *)",
-      "Bash(git status *)",
-      "Bash(grep *)",
-      "Bash(head *)",
-      "Bash(ls *)",
-      "Bash(make *)",
-      "Bash(npm run *)",
-      "Bash(pwd *)",
-      "Bash(tail *)",
-      "Edit",
-      "Read",
-      "Write",
-      "WebFetch",
-      "WebSearch"
-    ],
-    "ask": [],
+    "allow": ["Bash(*)", "Edit", "Read", "Write", "WebFetch", "WebSearch"],
+    "ask": ["Bash(rm -rf *)", "Bash(sudo  *)"],
     "deny": []
   }
 }
