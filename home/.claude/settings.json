@@ -4,11 +4,12 @@
     "commit": "",
     "pr": ""
   },
+  "effortLevel": "high",
   "enabledPlugins": {
     "pyright-lsp@claude-plugins-official": true
   },
   "env": {
-    "CLAUDE_ENV_FILE": "/Users/ben.fasoli/.zshenv"
+    "CLAUDE_ENV_FILE": "/Users/benfasoli/.zshenv"
   },
   "model": "opus[1m]",
   "permissions": {
