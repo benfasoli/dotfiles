@@ -16,8 +16,9 @@
     "allow": [
       "Bash(*)",
       "Edit",
+      "Glob",
+      "Grep",
       "Read",
-      "Search",
       "Write",
       "WebFetch",
       "WebSearch"
