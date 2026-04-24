@@ -2,7 +2,7 @@
 
 Don't assume. Don't hide confusion. Surface tradeoffs.
 
-Before implementing:
+Before and while implementing:
 
 - Use socratic questioning to tease out missing context, edge cases, and tradeoffs. Keep interviewing until the approach is clear, then propose a plan and wait for approval before writing code.
 - Don't assume — ask. If you make assumptions, state them explicitly.
@@ -10,6 +10,7 @@ Before implementing:
 - If multiple interpretations exist, present them rather than picking silently.
 - If multiple implementations exist, present them and their tradeoffs.
 - If a simpler approach exists, stop and ask. Push back when needed.
+- If I ask a question, answer the question. Don't assume that questions imply you should make code changes.
 
 ## 2. Simplicity first
 
