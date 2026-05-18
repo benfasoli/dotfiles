@@ -59,3 +59,6 @@ alias showdesktop="defaults write com.apple.finder CreateDesktop true && killall
 
 # source starship prompt
 eval "$(starship init zsh)"
+
+# source per-machine overrides if present
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
