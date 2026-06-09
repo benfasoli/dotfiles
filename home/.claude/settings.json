@@ -21,7 +21,8 @@
       "Read",
       "Write",
       "WebFetch",
-      "WebSearch"
+      "WebSearch",
+      "Skill"
     ],
     "ask": ["Bash(rm -rf *)", "Bash(sudo  *)"],
     "deny": []
