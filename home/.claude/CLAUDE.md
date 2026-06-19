@@ -64,3 +64,12 @@ When iterating on an open PR:
 4. Ask again before running `git push`.
 
 Explicit approval to open a PR grants permission to push the initial branch and open it. Follow-up commits do NOT inherit that permission — ask each time.
+
+## 7. Conventions and principles
+
+Reference docs in `docs/`, applied when writing or reviewing code unless a project's own conventions say otherwise:
+
+- **[docs/engineering.md](docs/engineering.md)** — cross-cutting principles: abstraction payoff, scale-appropriate infrastructure, domain/delivery boundaries, durable side-effects, real-dependency testing, and documenting decisions.
+- **[docs/python.md](docs/python.md)** — Python style (docstrings, naming, typing, exceptions); a Backend services section covers FastAPI + Postgres architecture, HTTP/API, and testing — skip it outside services of that shape.
+- **[docs/sql.md](docs/sql.md)** — Postgres formatting, naming, and schema conventions.
+- **[docs/markdown.md](docs/markdown.md)** — one paragraph per line; document durable conventions, not transient state.
