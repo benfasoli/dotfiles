@@ -18,11 +18,19 @@ Before any research, make sure the base branch is current with remote:
      `git remote set-head origin -a` and retry, or fall back to
      `gh repo view --json defaultBranchRef -q .defaultBranchRef.name`.
 3. Create the work branch off the freshly fetched REMOTE base, not the local
-   one, so a stale local base can't poison the diff:
-   - New worktree: `git worktree add ../<repo>-<slug> -b benfasoli/<descriptive-few-words> origin/<base>`
-   - Same tree: `git switch -c benfasoli/<descriptive-few-words> origin/<base>`
-     Use a short kebab-case slug from the task; refine the name later with
-     `git branch -m` once scope is clear.
+   one, so a stale local base can't poison the diff. First check whether you
+   are ALREADY inside a linked worktree (the desktop "worktree" checkbox puts
+   you in one): if `git rev-parse --git-dir` differs from
+   `git rev-parse --git-common-dir`, you are. Pick the branching mode from that:
+   - Already in a worktree → `git switch -c benfasoli/<descriptive-few-words> origin/<base>`
+     in place. Do NOT `git worktree add` — nesting another worktree under the
+     same repo multiplies the concurrent-session collision surface (see Phase 4).
+   - Not in a worktree, and you want an isolated tree →
+     `git worktree add ../<repo>-<slug> -b benfasoli/<descriptive-few-words> origin/<base>`
+   - Not in a worktree, working in place → `git switch -c benfasoli/<descriptive-few-words> origin/<base>`
+
+   Use a short kebab-case slug from the task; refine the name later with
+   `git branch -m` once scope is clear.
 4. If a local base branch exists and has diverged from remote (can't
    fast-forward), surface it to me rather than guessing.
 
@@ -54,6 +62,16 @@ implementation. Do not write a plan to disk and do not ask me to approve it.
 
 Build it. Run the repo's tests and linter (commands per CLAUDE.md). Fix failures
 before moving on. Track what you actually tested — you'll need it for the PR.
+
+Verify every edit against disk, not against the tool's own report. When several
+worktree sessions run concurrently on one repo, the Read/Edit/Write layer can
+serve another worktree's buffered content or silently fail to flush a write to
+this worktree's disk — a real, observed bug. So after editing, confirm with
+Bash (`git diff --stat`, `grep -n`), and do NOT trust an Edit "success" message
+or re-Read to confirm — Read is the layer that lies here. If an edit won't
+stick, write it via Bash (e.g. a `python3` exact-string replace) and re-check
+the diff. The collision is per-path, so this mainly bites when two live
+sessions touch the same file.
 
 If you need to investigate how something works elsewhere mid-implementation
 ("where else is this pattern used?", "what does this helper return?"), delegate

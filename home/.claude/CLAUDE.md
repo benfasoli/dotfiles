@@ -52,7 +52,7 @@ Use clear, conventional branch names, commit messages, PR titles, and PR descrip
 
 ## 6. Pushing to remote
 
-Never push to a remote without explicit permission. This applies to PR branches, main, and any other branch.
+By default, never push to a remote or open a PR without explicit permission — this applies to PR branches, main, and any other branch.
 
 Approvals are per-step, not transitive. "Yes apply" approves the edit only — commit and push each require separate approval. If a single approval is meant to cover multiple steps, the user will say so explicitly ("yes, ship it" / "apply and push"). When in doubt, ask one short follow-up ("Push?") — cheaper than an unwanted commit on the remote.
 
@@ -64,6 +64,8 @@ When iterating on an open PR:
 4. Ask again before running `git push`.
 
 Explicit approval to open a PR grants permission to push the initial branch and open it. Follow-up commits do NOT inherit that permission — ask each time.
+
+Invoking a workflow whose declared endpoint is a push + PR (e.g. `/ship`) is itself that approval, for that one run: it authorizes pushing a new branch and opening a draft PR, nothing more. It does not cover the default/protected branch, marking ready, reviewers, merging, or any push that isn't cheaply reversible (deploy/notify-on-push, auto-merge, force-push), nor proceeding when a design decision would benefit from my input — each still needs a fresh ask.
 
 ## 7. Conventions and principles
 
