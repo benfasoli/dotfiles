@@ -1,3 +1,10 @@
+# dotfiles
+
+Personal macOS development environment: shell, git, vim, terminal, and Claude
+Code configuration, kept in version control and symlinked into `$HOME` by a
+single `make install`. Cloning this repo and running the bootstrap below brings
+a fresh machine to a known-good baseline.
+
 ## Bootstrap
 
 ```bash
@@ -34,9 +41,13 @@ keep `install` offline-safe.
 
 ### Per-machine overrides
 
-`~/.zshrc` sources `~/.zshrc.local` at the end if it exists. Drop machine- or
-host-specific exports, aliases, or PATH tweaks there to keep them out of the
-tracked config.
+Both shell files source an untracked `*.local` sibling at the end if it exists:
+`~/.zshrc` sources `~/.zshrc.local`, and `~/.zshenv` sources `~/.zshenv.local`.
+Drop machine- or host-specific exports, aliases, or PATH tweaks there to keep
+them out of the tracked config — use `~/.zshenv.local` for anything that must be
+set for non-interactive shells too. Only `.zshrc.local` is currently in
+`.gitignore`, so add `.zshenv.local` to your ignore rules before putting secrets
+in it.
 
 ## Manual setup steps
 
