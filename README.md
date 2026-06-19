@@ -41,13 +41,11 @@ keep `install` offline-safe.
 
 ### Per-machine overrides
 
-Both shell files source an untracked `*.local` sibling at the end if it exists:
-`~/.zshrc` sources `~/.zshrc.local`, and `~/.zshenv` sources `~/.zshenv.local`.
-Drop machine- or host-specific exports, aliases, or PATH tweaks there to keep
-them out of the tracked config — use `~/.zshenv.local` for anything that must be
-set for non-interactive shells too. Only `.zshrc.local` is currently in
-`.gitignore`, so add `.zshenv.local` to your ignore rules before putting secrets
-in it.
+`~/.zshrc` and `~/.zshenv` each source an untracked `*.local` sibling
+(`~/.zshrc.local` and `~/.zshenv.local`) at the end if it exists; both are
+gitignored. Put machine- or host-specific exports, aliases, or PATH tweaks there
+to keep them out of the tracked config — use `~/.zshenv.local` for anything that
+must also be set for non-interactive shells.
 
 ## Manual setup steps
 
