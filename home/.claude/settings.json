@@ -1,16 +1,13 @@
 {
-  "alwaysThinkingEnabled": true,
+  "env": {
+    "CLAUDE_ENV_FILE": "/Users/benfasoli/.zshenv"
+  },
   "attribution": {
     "commit": "",
     "pr": ""
   },
+  "alwaysThinkingEnabled": true,
   "effortLevel": "high",
-  "enabledPlugins": {
-    "pyright-lsp@claude-plugins-official": true
-  },
-  "env": {
-    "CLAUDE_ENV_FILE": "/Users/benfasoli/.zshenv"
-  },
   "model": "opus[1m]",
   "permissions": {
     "allow": [
@@ -19,12 +16,15 @@
       "Glob",
       "Grep",
       "Read",
+      "Skill",
       "Write",
       "WebFetch",
-      "WebSearch",
-      "Skill"
+      "WebSearch"
     ],
-    "ask": ["Bash(rm -rf *)", "Bash(sudo  *)"],
-    "deny": []
+    "deny": [],
+    "ask": ["Bash(rm -rf *)", "Bash(sudo  *)"]
+  },
+  "enabledPlugins": {
+    "pyright-lsp@claude-plugins-official": true
   }
 }

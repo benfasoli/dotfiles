@@ -24,3 +24,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # source uv
 . "$HOME/.cargo/env"
+
+# source per-machine overrides if present
+[[ -f ~/.zshenv.local ]] && source ~/.zshenv.local

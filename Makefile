@@ -20,7 +20,8 @@ claude:
 	mkdir -p $(HOME)/.claude/skills
 	ln -sfn $(DOTFILES)/home/.claude/CLAUDE.md     $(HOME)/.claude/CLAUDE.md
 	ln -sfn $(DOTFILES)/home/.claude/settings.json $(HOME)/.claude/settings.json
-	ln -sfn $(DOTFILES)/home/.claude/skills/ship   $(HOME)/.claude/skills/ship
+	ln -sfn $(DOTFILES)/home/.claude/skills/ship         $(HOME)/.claude/skills/ship
+	ln -sfn $(DOTFILES)/home/.claude/skills/improve-docs $(HOME)/.claude/skills/improve-docs
 
 brew:
 	brew bundle --file=$(DOTFILES)/Brewfile
