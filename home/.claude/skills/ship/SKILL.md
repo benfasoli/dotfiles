@@ -100,10 +100,23 @@ invoking `/ship` authorizes that single push. Do NOT push again, mark the PR
 ready, or merge without separate explicit approval.
 
 1. Commit using the repo's convention.
-2. `git push -u origin HEAD`
-3. Open a **draft** PR with `gh pr create --draft --base <base>`.
-4. Stop and give me the PR URL plus a one-line summary of what's left for me
+2. Sync with the remote base before pushing — `origin/<base>` will have moved
+   while you worked, and the PR should merge cleanly. `git fetch origin <base>`,
+   then if `origin/<base>` is ahead of your branch's merge-base, integrate it
+   (`git merge origin/<base>` — or rebase if that's the repo's convention).
+   Resolve every conflict by combining BOTH sides' intent (your change AND
+   theirs), never by blindly taking one side; confirm no conflict markers remain
+   (`grep -rn '^<<<<<<<\|^>>>>>>>'`) and no unmerged paths
+   (`git diff --name-only --diff-filter=U`). Then re-run the linter and tests,
+   and re-verify any behavior the incoming changes touch — a clean text merge can
+   still be semantically wrong. Commit the merge.
+3. `git push -u origin HEAD`
+4. Open a **draft** PR with `gh pr create --draft --base <base>`.
+5. Stop and give me the PR URL plus a one-line summary of what's left for me
    (review, mark ready, merge). Do not take further git/PR actions.
+
+If the base moves again after the PR is open and you're asked to re-sync, repeat
+step 2 (fetch, integrate, resolve, re-verify) before any further push.
 
 ### PR title
 
