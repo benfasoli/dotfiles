@@ -28,6 +28,9 @@ make vim
 make claude
 ```
 
+`make claude` links `~/.claude/CLAUDE.md`, `~/.claude/settings.json`, the `docs/` reference files,
+and the bundled skills (`ship`, `improve-docs`).
+
 Targets are idempotent — re-running any of them overwrites stale links cleanly.
 
 ### Brew bundle
@@ -63,7 +66,7 @@ must also be set for non-interactive shells.
    ```
 1. Open terminal settings. Drag `One Dark.terminal` onto the Profiles list and set it as default.
 1. Set terminal font to Fira Code Nerdfont.
-1. Open System Preferences > Keyboard. Set repeat rate to fast. Set delay until repeat to short.
-1. Open System Preferences > Trackpad. Enable tap to click.
-1. Open System Preferences > Desktop & Dock. Disable recent apps.
+1. Open System Settings > Keyboard. Set repeat rate to fast. Set delay until repeat to short.
+1. Open System Settings > Trackpad. Enable tap to click.
+1. Open System Settings > Desktop & Dock. Disable recent apps.
 1. [Generate SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and configure GitHub auth
