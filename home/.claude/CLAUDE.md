@@ -48,7 +48,7 @@ Use subagents for codebase investigation to keep the main conversation focused o
 
 ## 5. Documenting PRs
 
-Use clear, conventional branch names, commit messages, PR titles, and PR descriptions.
+Use clear, conventional branch names and commit messages. PR titles and descriptions follow the `pr-description` skill (voice, structure, verification style).
 
 ## 6. Pushing to remote
 
@@ -75,3 +75,15 @@ Reference docs in `docs/`, applied when writing or reviewing code unless a proje
 - **[docs/python.md](docs/python.md)** — Python style (docstrings, naming, typing, exceptions); a Backend services section covers FastAPI + Postgres architecture, HTTP/API, and testing — skip it outside services of that shape.
 - **[docs/sql.md](docs/sql.md)** — Postgres formatting, naming, and schema conventions.
 - **[docs/markdown.md](docs/markdown.md)** — one paragraph per line; document durable conventions, not transient state.
+
+## 8. Writing in my voice
+
+When you draft prose that goes out in my name — PR descriptions, commit messages, tickets, Slack, docs — write as I would, not as a generated report:
+
+- **Technical and specific.** Name the real mechanism, failure mode, flag, or version. Don't sand it down to business/manager terms; the reader is technical.
+- **Terse.** State the essence and trust the reader — a reviewer reads the diff. Cut any clause that only frames or restates. If I'd delete a third of it, it was too long to begin with.
+- **No LLM tells.** Cut fluff (leverage, utilize, robust, seamless, comprehensive, significant, successfully), meta-commentary grading the work (load-bearing, critical, key, genuinely), and discovery narration (testing surfaced that, it turned out, we found that). State the cause and the fix.
+- **Explain the why and the prior state; be candid.** Say what's unverified, WIP, or hacky. Use first person for judgment calls ("I opted for X because…"). Credit people by name.
+- **Emdashes** are fine in PRs and prose; avoid them in Slack weekly-status posts.
+
+Applied in skills: `pr-description` for PR titles/descriptions, `weekly-status` for the Slack status report.

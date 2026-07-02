@@ -33,6 +33,17 @@ Before any research, make sure the base branch is current with remote:
    `git branch -m` once scope is clear.
 4. If a local base branch exists and has diverged from remote (can't
    fast-forward), surface it to me rather than guessing.
+5. **Pin the working root and never edit outside it.** Capture
+   `git rev-parse --show-toplevel` — call this `$ROOT`. Every file you Read,
+   Edit, or Write for the rest of this run MUST be under `$ROOT`. In a linked
+   worktree, the main checkout (e.g. `…/<repo>/packages/foo.ts`) and the
+   worktree (`…/<repo>/.claude/worktrees/<name>/packages/foo.ts`) hold separate
+   copies of the same file — editing the main-checkout path silently lands your
+   change on the wrong tree (an observed, real bug). So: if you ever hold an
+   absolute path that does NOT start with `$ROOT`, do not touch it — rewrite it
+   to its `$ROOT`-relative equivalent first. Prefer `$ROOT`-relative paths
+   everywhere; when you must use an absolute path, confirm it begins with
+   `$ROOT`.
 
 ## Phase 1 — Research (delegate, don't pollute main context)
 
@@ -42,6 +53,12 @@ conventions, and the repo's test/lint commands. Note relevant industry best
 practices and any place they conflict with the repo's conventions; prefer the
 repo's, but flag a conflict if its convention is clearly wrong. Return a short
 distilled summary, not a dump.
+
+Tell the subagent the working root is `$ROOT` and require it to report every
+location as a path relative to `$ROOT` (or rooted at `$ROOT`) — never an
+absolute path into the main checkout. A bare repo subagent may resolve symbols
+to the main checkout's copy; before acting on any path it returns, re-anchor it
+under `$ROOT` (Phase 0, step 5).
 
 ## Phase 2 — Front-load ALL questions, then STOP
 
@@ -63,15 +80,23 @@ implementation. Do not write a plan to disk and do not ask me to approve it.
 Build it. Run the repo's tests and linter (commands per CLAUDE.md). Fix failures
 before moving on. Track what you actually tested — you'll need it for the PR.
 
-Verify every edit against disk, not against the tool's own report. When several
-worktree sessions run concurrently on one repo, the Read/Edit/Write layer can
-serve another worktree's buffered content or silently fail to flush a write to
-this worktree's disk — a real, observed bug. So after editing, confirm with
-Bash (`git diff --stat`, `grep -n`), and do NOT trust an Edit "success" message
-or re-Read to confirm — Read is the layer that lies here. If an edit won't
-stick, write it via Bash (e.g. a `python3` exact-string replace) and re-check
-the diff. The collision is per-path, so this mainly bites when two live
-sessions touch the same file.
+Confirm the path is under `$ROOT` BEFORE every edit (Phase 0, step 5), and
+verify every edit against disk AFTER, not against the tool's own report. When
+several worktree sessions run concurrently on one repo, the Read/Edit/Write
+layer can serve another worktree's buffered content or silently fail to flush a
+write to this worktree's disk — a real, observed bug. So after editing, confirm
+with Bash run from `$ROOT` (`git -C "$ROOT" diff --stat`, `grep -n`), and do NOT
+trust an Edit "success" message or re-Read to confirm — Read is the layer that
+lies here. If an edit won't stick, write it via Bash (e.g. a `python3` exact-
+string replace) and re-check the diff. The collision is per-path, so this mainly
+bites when two live sessions touch the same file.
+
+Once you have made your first edit, sanity-check that it landed where you
+intended: `git -C "$ROOT" diff --stat` should list your file, and the main
+checkout must stay clean. If your changes show up there instead of under `$ROOT`,
+you edited the wrong copy — move them (capture the diff, `git checkout --` the
+main checkout to revert it, re-apply under `$ROOT`) and fix the offending paths
+before continuing.
 
 If you need to investigate how something works elsewhere mid-implementation
 ("where else is this pattern used?", "what does this helper return?"), delegate
@@ -120,11 +145,15 @@ step 2 (fetch, integrate, resolve, re-verify) before any further push.
 
 ### PR title
 
-Imperative and searchable: `[action] [what] [where/why]`
-(e.g. "Add idempotency keys to ingest endpoint to prevent duplicate writes").
-Not "fix bug" or "updates".
+Per the `pr-description` skill: imperative and searchable, never "fix bug" or
+"updates".
 
 ### PR description — describe INTENT (why), kept to the 5-minute rule
+
+Write the prose per the `pr-description` skill
+(`~/.claude/skills/pr-description/SKILL.md`). Keep the section headers below,
+but **omit a section rather than pad it** — a one-line "## Why" beats three
+sentences of filler, and a routine PR does not need every section.
 
 ## Why
 
@@ -136,6 +165,18 @@ is unknown, say what the change is meant to enable and stop there.
 
 High-level approach. Key decisions and the reasoning. Alternatives considered
 and why they were rejected. No line-by-line narration.
+
+## Screenshots (UI changes only)
+
+For a new page or any UI-visible change, include an image — the new screen, or
+before/after when changing existing UI. Capture it however the repo runs its app
+(preview server, or a headless browser at the app's target viewport), then
+attach it by dragging/pasting into the PR description in GitHub's web editor:
+that uploads to GitHub's `user-attachments` CDN and renders inline without
+committing anything to the repo. There is no `gh`/API equivalent (the upload
+needs the browser session), so leave a placeholder in this section and tell me
+the local path to drag in — do NOT commit screenshot files to the repo. Omit
+this section entirely when the change has no UI surface.
 
 ## Testing
 

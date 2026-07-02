@@ -17,15 +17,17 @@ vim:
 	ln -sfn $(DOTFILES)/home/.vimrc $(HOME)/.vimrc
 
 claude:
-	mkdir -p $(HOME)/.claude/skills $(HOME)/.claude/docs
+	mkdir -p $(HOME)/.claude/skills $(HOME)/.claude/docs $(HOME)/.claude/hooks
 	ln -sfn $(DOTFILES)/home/.claude/CLAUDE.md     $(HOME)/.claude/CLAUDE.md
 	ln -sfn $(DOTFILES)/home/.claude/settings.json $(HOME)/.claude/settings.json
 	ln -sfn $(DOTFILES)/home/.claude/docs/engineering.md $(HOME)/.claude/docs/engineering.md
 	ln -sfn $(DOTFILES)/home/.claude/docs/python.md      $(HOME)/.claude/docs/python.md
 	ln -sfn $(DOTFILES)/home/.claude/docs/sql.md         $(HOME)/.claude/docs/sql.md
 	ln -sfn $(DOTFILES)/home/.claude/docs/markdown.md    $(HOME)/.claude/docs/markdown.md
-	ln -sfn $(DOTFILES)/home/.claude/skills/ship         $(HOME)/.claude/skills/ship
-	ln -sfn $(DOTFILES)/home/.claude/skills/improve-docs $(HOME)/.claude/skills/improve-docs
+	ln -sfn $(DOTFILES)/home/.claude/skills/ship           $(HOME)/.claude/skills/ship
+	ln -sfn $(DOTFILES)/home/.claude/skills/improve-docs   $(HOME)/.claude/skills/improve-docs
+	ln -sfn $(DOTFILES)/home/.claude/skills/pr-description $(HOME)/.claude/skills/pr-description
+	ln -sfn $(DOTFILES)/home/.claude/hooks/block-out-of-project-edits.py $(HOME)/.claude/hooks/block-out-of-project-edits.py
 
 brew:
 	brew bundle --file=$(DOTFILES)/Brewfile
