@@ -1,14 +1,12 @@
 {
   "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "CLAUDE_ENV_FILE": "/Users/benfasoli/.zshenv"
   },
   "attribution": {
     "commit": "",
     "pr": ""
   },
-  "alwaysThinkingEnabled": true,
-  "effortLevel": "high",
-  "model": "opus[1m]",
   "permissions": {
     "allow": [
       "Bash(*)",
@@ -22,9 +20,30 @@
       "WebSearch"
     ],
     "deny": [],
-    "ask": ["Bash(rm -rf *)", "Bash(sudo  *)"]
+    "ask": [
+      "Bash(rm -rf *)",
+      "Bash(sudo  *)"
+    ]
+  },
+  "model": "opus[1m]",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$HOME/.claude/hooks/block-out-of-project-edits.py\"",
+            "statusMessage": "Checking edit isn't in the worktree's parent checkout"
+          }
+        ]
+      }
+    ]
   },
   "enabledPlugins": {
-    "pyright-lsp@claude-plugins-official": true
-  }
+    "pyright-lsp@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true
+  },
+  "alwaysThinkingEnabled": true,
+  "effortLevel": "high"
 }
