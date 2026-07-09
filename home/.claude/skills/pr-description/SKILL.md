@@ -17,14 +17,20 @@ The failure mode to avoid is the generated-template look: a `## Summary` bullet 
 - **Bare imperative** for small changes — "Adds …", "Bumps …", "Swaps …", "Removes …", "Moves …", "Fixes …".
 - **The problem first** for bugs/ops — "The QA deploy has never succeeded: …", "Nodes have less memory than expected …", "Edits to public lots with existing LME bids return 422 in QA: …".
 
+The floor is ~three sentences: what it checks in or changes, what that enables (intent level — "allows running tests using the debugger", not the settings keys), and the impact line. A tooling PR that fits in three sentences should stay three sentences.
+
 Then, as needed:
 - **State the goal** — "Goal is to <intent>." — and the **prior broken state** — "Previously, <what was wrong>." Ben explains *why*, and what the world looked like before, not just the mechanism.
 - **"Also <verb>s …"** for secondary changes ("Also refactors …", "Also fixes a bug where …").
 - **End with verification** (see below) and **refs** (see below).
 
+**For a large diff, answer "do I have to read all of this?" first.** Open with a `TLDR:` naming what the bulk of the lines are (generated code, vendored assets, a mechanical rename) and the ✅ verification, then a **Scope** statement of what the PR deliberately does not do. See rad-rwos#62.
+
 **Sectioned only when the change earns it.** For a large or multi-part PR, use `##` headers named after the *subsystems* (`## Postgres: Database abstraction`, `## Query interface: t-strings`, `## Also in this PR`) — not the generic Why/What/Summary/Test-plan scaffold. A focused bug fix can use a minimal `## Problem` / `## Fix` / `## Testing`. The test: would a reviewer need a map to navigate this diff? If not, prose.
 
-When a fixed template *is* imposed on you (e.g. running under /ship, which keeps `## Why` / `## What` / `## Testing` / `## Risks / follow-ups` / `## Related`), keep the sections but write each one in this voice — terse, concrete, no hedging — and **omit a section rather than pad it**. A one-line "## Why" beats three sentences of restatement.
+`## Testing` and `## Risks / follow-ups` sections don't survive Ben's edit even when populated. Verification folds to the one ✅ line (see below); a genuine risk becomes one candid sentence in the prose, not a section of preconditions and caveats.
+
+When a fixed template *is* imposed on you (e.g. running under /ship, which keeps `## Why` / `## What` / `## Testing` / `## Risks / follow-ups` / `## Related`), write `## Why` / `## What` in this voice — terse, concrete, no hedging — treat `## Testing` as one line, and omit `## Risks / follow-ups` entirely unless there's a real blocker. **Omit a section rather than pad it.** A one-line "## Why" beats three sentences of restatement.
 
 ## Restraint — the reviewer reads the diff
 
@@ -36,6 +42,8 @@ Contrast, same real PR (fixing a draft-lot crash):
 - **Ben's actual version:** "Publishing or deleting a draft lot from the edit page could crash … when the draft cache was cleared while the edit form was still reading from it. This reorders the cache refresh so the destination page's data is primed and the draft list is only refreshed once the edit form is no longer reading it." — two sentences: the symptom, the essence of the fix. Then the Sentry link.
 
 The reviewer who wants the `refetchType: 'none'` detail reads the diff. Name a specific symbol only when it *is* the point (the failing exception, the one flag that was wrong), not to prove you understood the change.
+
+**Weight tracks the diff, not the effort.** The description scales with what the reviewer must absorb, not with how long the investigation took. A 4-line helm values bump gets one or two sentences even when hours of debugging led there — the root-cause narrative, the alternatives considered, and the "worth a glance before prod" caveats all get cut in edit. "Root causes are first-class content" applies to bug fixes where the symptom is the story, not to config bumps a reviewer can see whole. Real example: a CPU-limit change shipped as exactly "Bumps the scanner-ui and web-ui nginx pods from `cpu: 100m` request == limit to `250m` request / `1` limit. Memory is unchanged." — four paragraphs of throttling analysis deleted.
 
 When a design choice needs justifying, use **first person** — "I opted for this approach instead of downgrading git on the runners since I think it's more maintainable" — not a detached "The trade-off is deliberate." The judgment is yours; say so.
 
@@ -59,10 +67,10 @@ He ends with what he actually ran, not a checklist of intentions:
   > ```
   > TcAutomation.exe lint --solution rw-core.sln
   > ```
-- Or a flat statement when that's the whole story: **"No behavioral changes."**, **"Backward-compatible change."**, **"No source changes were needed — …"**.
+- Or a flat statement when that's the whole story: **"No behavioral changes."**, **"Backward-compatible change."**, **"No source changes were needed — …"**. For dev-tooling, config, or CI changes with no runtime effect, that flat statement is the *entire* close — don't invent a ✅ command for a change nothing executes. Checked-in editor configs, lint settings, and docs need an impact statement, not a verification block.
 - If it's not verified, say so plainly ("Draft until verified: this depends on the runner having a usable local builder, which I can't confirm from here").
 
-Avoid the `- [ ]` / `- [x]` checkbox test-plan format — that's the generated look.
+Never a `## Testing` section with a bulleted command log — Ben deletes those wholesale even when accurate, and the `- [ ]` checkbox variant is worse. One ✅ line carrying the single highest-signal check; lint/type-check/unit-test runs are assumed and not listed unless one *is* the point. For user-facing changes checked in an environment, the whole close can be "✅ Manually verified expected behavior in QA."
 
 ## Refs
 
@@ -76,6 +84,17 @@ At the end, bare and terse — not prosified:
 Imperative and searchable — `[verb] [what] [where/why]` ("Replace runner hard-kill with graceful TwinCAT process cleanup"), or a conventional-commit prefix when the repo uses them (`feat(scanner): …`, `fix(adapters): …`, `docs: …`). Never "fix bug" or "updates".
 
 ## Worked examples (real, self-authored)
+
+**Short, tooling-only — the whole description:**
+> Add vscode tool configs
+>
+> Checks in vscode configs to auto-configure python and typescript tools.
+>
+> This configures static analysis tools across frontend/backend file types for working in the IDE, and test runner configs that allow running tests using the debugger.
+>
+> No behavioral changes.
+
+Four files changed, none named; no ✅ needed because nothing runs.
 
 **Small, prose, verified:**
 > Keep red cancel button text red on hover

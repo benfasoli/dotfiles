@@ -48,7 +48,7 @@ Use subagents for codebase investigation to keep the main conversation focused o
 
 ## 5. Documenting PRs
 
-Use clear, conventional branch names and commit messages. PR titles and descriptions follow the `pr-description` skill (voice, structure, verification style).
+Branch names use `benfasoli/<descriptive-name>` — never a `claude/` prefix. An agent worktree is created on a `claude/<slug>` branch before the session starts, so rename the working branch (`git branch -m benfasoli/<descriptive-name>`) before the first push. Use clear, conventional commit messages. PR titles and descriptions follow the `pr-description` skill (voice, structure, verification style).
 
 ## 6. Pushing to remote
 

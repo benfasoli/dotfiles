@@ -25,7 +25,6 @@
       "Bash(sudo  *)"
     ]
   },
-  "model": "opus[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -45,5 +44,6 @@
     "superpowers@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": true,
-  "effortLevel": "high"
+  "effortLevel": "xhigh",
+  "tui": "fullscreen"
 }
