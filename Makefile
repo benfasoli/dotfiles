@@ -27,6 +27,7 @@ claude:
 	ln -sfn $(DOTFILES)/home/.claude/skills/ship           $(HOME)/.claude/skills/ship
 	ln -sfn $(DOTFILES)/home/.claude/skills/improve-docs   $(HOME)/.claude/skills/improve-docs
 	ln -sfn $(DOTFILES)/home/.claude/skills/pr-description $(HOME)/.claude/skills/pr-description
+	ln -sfn $(DOTFILES)/home/.claude/skills/weekly-status  $(HOME)/.claude/skills/weekly-status
 	ln -sfn $(DOTFILES)/home/.claude/hooks/block-out-of-project-edits.py $(HOME)/.claude/hooks/block-out-of-project-edits.py
 
 brew:
