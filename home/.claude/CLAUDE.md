@@ -67,7 +67,7 @@ Explicit approval to open a PR grants permission to push the initial branch and 
 
 Invoking a workflow whose declared endpoint is a push + PR (e.g. `/ship`) is itself that approval, for that one run: it authorizes pushing a new branch and opening a draft PR, nothing more. It does not cover the default/protected branch, marking ready, reviewers, merging, or any push that isn't cheaply reversible (deploy/notify-on-push, auto-merge, force-push), nor proceeding when a design decision would benefit from my input — each still needs a fresh ask.
 
-For multi-PR work (a chain of PRs), one item at a time: implement it, open its PR as a draft, and iterate until I promote it out of draft to review. Only then start the next item — keeps focus on a single task and avoids rebasing chained changes.
+For multi-PR work (a chain of PRs), one item at a time: start each item in a fresh worktree cut from the up-to-date target branch (never in my primary checkout — I switch branches in it while agents run), implement it there, open its PR as a draft, and iterate until I promote it out of draft to review. Only then start the next item — keeps focus on a single task and avoids rebasing chained changes.
 
 ## 7. Conventions and principles
 
@@ -87,5 +87,3 @@ When you draft prose that goes out in my name — PR descriptions, commit messag
 - **No LLM tells.** Cut fluff (leverage, utilize, robust, seamless, comprehensive, significant, successfully), meta-commentary grading the work (load-bearing, critical, key, genuinely), and discovery narration (testing surfaced that, it turned out, we found that). State the cause and the fix.
 - **Explain the why and the prior state; be candid.** Say what's unverified, WIP, or hacky. Use first person for judgment calls ("I opted for X because…"). Credit people by name.
 - **Emdashes** are fine in PRs and prose; avoid them in Slack weekly-status posts.
-
-Applied in skills: `pr-description` for PR titles/descriptions, `weekly-status` for the Slack status report.
