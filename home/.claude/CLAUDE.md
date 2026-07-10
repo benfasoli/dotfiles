@@ -67,6 +67,8 @@ Explicit approval to open a PR grants permission to push the initial branch and 
 
 Invoking a workflow whose declared endpoint is a push + PR (e.g. `/ship`) is itself that approval, for that one run: it authorizes pushing a new branch and opening a draft PR, nothing more. It does not cover the default/protected branch, marking ready, reviewers, merging, or any push that isn't cheaply reversible (deploy/notify-on-push, auto-merge, force-push), nor proceeding when a design decision would benefit from my input — each still needs a fresh ask.
 
+For multi-PR work (a chain of PRs), one item at a time: implement it, open its PR as a draft, and iterate until I promote it out of draft to review. Only then start the next item — keeps focus on a single task and avoids rebasing chained changes.
+
 ## 7. Conventions and principles
 
 Reference docs in `docs/`, applied when writing or reviewing code unless a project's own conventions say otherwise:
