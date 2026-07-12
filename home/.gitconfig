@@ -1,6 +1,6 @@
 [user]
 name = Ben Fasoli
-email = ben.fasoli@redwoodmaterials.com
+email = benfasoli@gmail.com
 
 [init]
 defaultBranch = main
@@ -10,3 +10,6 @@ editor = vim
 
 [push]
 autoSetupRemote = true
+
+[include]
+path = ~/.gitconfig.local
