@@ -24,6 +24,7 @@ claude:
 	ln -sfn $(DOTFILES)/home/.claude/docs/python.md      $(HOME)/.claude/docs/python.md
 	ln -sfn $(DOTFILES)/home/.claude/docs/sql.md         $(HOME)/.claude/docs/sql.md
 	ln -sfn $(DOTFILES)/home/.claude/docs/markdown.md    $(HOME)/.claude/docs/markdown.md
+	ln -sfn $(DOTFILES)/home/.claude/docs/writing.md     $(HOME)/.claude/docs/writing.md
 	ln -sfn $(DOTFILES)/home/.claude/skills/ship           $(HOME)/.claude/skills/ship
 	ln -sfn $(DOTFILES)/home/.claude/skills/improve-docs   $(HOME)/.claude/skills/improve-docs
 	ln -sfn $(DOTFILES)/home/.claude/skills/pr-description $(HOME)/.claude/skills/pr-description

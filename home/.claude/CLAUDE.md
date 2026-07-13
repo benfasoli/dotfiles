@@ -77,6 +77,7 @@ Reference docs in `docs/`, applied when writing or reviewing code unless a proje
 - **[docs/python.md](docs/python.md)** — Python style (docstrings, naming, typing, exceptions); a Backend services section covers FastAPI + Postgres architecture, HTTP/API, and testing — skip it outside services of that shape.
 - **[docs/sql.md](docs/sql.md)** — Postgres formatting, naming, and schema conventions.
 - **[docs/markdown.md](docs/markdown.md)** — one paragraph per line; document durable conventions, not transient state.
+- **[docs/writing.md](docs/writing.md)** — two documentation modes (narrative vs. technical), routed by artifact type, and the doc-freshness rule.
 
 ## 8. Writing in my voice
 
