@@ -48,7 +48,7 @@ Use subagents for codebase investigation to keep the main conversation focused o
 
 ## 5. Documenting PRs
 
-Branch names use `benfasoli/<descriptive-name>` — never a `claude/` prefix. An agent worktree is created on a `claude/<slug>` branch before the session starts, so rename the working branch (`git branch -m benfasoli/<descriptive-name>`) before the first push. Use clear, conventional commit messages. PR titles and descriptions follow the `pr-description` skill (voice, structure, verification style).
+Branch names use `benfasoli/<descriptive-name>` — never a `claude/` prefix. An agent worktree is created on a `claude/<slug>` branch before the session starts, so rename the working branch (`git branch -m benfasoli/<descriptive-name>`) before the first push. Use clear, conventional commit messages. PR titles and descriptions follow the `pr-description` skill.
 
 ## 6. Pushing to remote
 
@@ -77,14 +77,8 @@ Reference docs in `docs/`, applied when writing or reviewing code unless a proje
 - **[docs/python.md](docs/python.md)** — Python style (docstrings, naming, typing, exceptions); a Backend services section covers FastAPI + Postgres architecture, HTTP/API, and testing — skip it outside services of that shape.
 - **[docs/sql.md](docs/sql.md)** — Postgres formatting, naming, and schema conventions.
 - **[docs/markdown.md](docs/markdown.md)** — one paragraph per line; document durable conventions, not transient state.
-- **[docs/writing.md](docs/writing.md)** — two documentation modes (narrative vs. technical), routed by artifact type, and the doc-freshness rule.
+- **[docs/writing.md](docs/writing.md)** — voice for anything written in my name, the narrative/technical repo-doc modes, and the doc-freshness rule.
 
 ## 8. Writing in my voice
 
-When you draft prose that goes out in my name — PR descriptions, commit messages, tickets, Slack, docs — write as I would, not as a generated report:
-
-- **Technical and specific.** Name the real mechanism, failure mode, flag, or version. Don't sand it down to business/manager terms; the reader is technical.
-- **Terse.** State the essence and trust the reader — a reviewer reads the diff. Cut any clause that only frames or restates. If I'd delete a third of it, it was too long to begin with.
-- **No LLM tells.** Cut fluff (leverage, utilize, robust, seamless, comprehensive, significant, successfully), meta-commentary grading the work (load-bearing, critical, key, genuinely), and discovery narration (testing surfaced that, it turned out, we found that). State the cause and the fix.
-- **Explain the why and the prior state; be candid.** Say what's unverified, WIP, or hacky. Use first person for judgment calls ("I opted for X because…"). Credit people by name.
-- **Emdashes** are fine in PRs and prose; avoid them in Slack weekly-status posts.
+Anything drafted in my name (PR descriptions, commit messages, tickets, Slack, docs) follows [docs/writing.md](docs/writing.md). The essentials: lead with the problem, spend words on why rather than describing the change, be technically specific and candid, and avoid AI tells (em-dash splices, colon rhythm, fragments posing as emphasis, filler adjectives, meta-commentary, discovery narration).

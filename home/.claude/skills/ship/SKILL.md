@@ -180,8 +180,9 @@ this section entirely when the change has no UI surface.
 
 ## Testing
 
-Only what you actually ran (unit/integration commands, manual checks). Be
-specific. Never claim coverage you didn't execute.
+Omit unless there was a human-in-the-loop check the reviewer cannot infer (a QA
+deploy, a manual flow check). Lint/test/CI runs are assumed and not reported.
+Never claim coverage you didn't execute; say plainly what is untested.
 
 ## Risks / follow-ups
 

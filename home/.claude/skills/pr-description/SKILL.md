@@ -1,122 +1,72 @@
 ---
 name: pr-description
-description: Write a GitHub PR title and description in Ben's authentic engineering voice — prose-first, technically specific, honest about what's verified and what isn't. Use whenever composing or revising a PR description for a benfasoli PR (directly, via `gh pr create`, or when another workflow like /ship needs the body written), and whenever a draft PR body reads like a generated template (## Summary + ## Test plan checklists, exhaustive ## Why/## What/## Risks scaffolding, hedgy filler) that should sound like Ben instead.
+description: Write a GitHub PR title and description that opens with the problem and spends its words on the reasoning, in Ben's voice (clear conversational prose, no AI tells, candid about what's unverified). Use whenever composing or revising a PR description for a benfasoli PR (directly, via `gh pr create`, or when another workflow like /ship needs the body written), and whenever a draft PR body reads like a generated template (## Summary + ## Test plan checklists, changeset narration, hedgy filler) that should sound like Ben instead.
 ---
 
-# PR descriptions in Ben's voice
+# PR descriptions
 
-Ben writes PR descriptions as a terse note to a technical reviewer, not a report. The reviewer is smart and reads the diff; the description explains what changed, why, and what's been verified — nothing more. This skill encodes that voice, derived from ~90 of his hand-written PRs.
+A PR description explains the problem and the reasoning to a reviewer who will read the diff. Voice follows `~/.claude/docs/writing.md`; this skill covers what is specific to PRs.
 
-The failure mode to avoid is the generated-template look: a `## Summary` bullet list plus a `## Test plan` checklist, or an exhaustive `## Why`/`## What`/`## Testing`/`## Risks` scaffold applied to every change regardless of size, padded with hedgy "Low risk; ..." restatements. That structure is the tell that a description wasn't written by Ben. Match the change's weight instead.
+The failure mode to avoid is describing the changeset. The reviewer can see what changed. They cannot see why the problem existed, what constraint shaped the fix, or which alternative you rejected, and those are the description's job. The generated-template look (## Summary bullets plus a ## Test plan checklist) and the diff-walk (file lists, function-by-function narration) fail the same way: all what, no why.
 
-## Structure — match the change, don't template it
+## Structure
 
-**Default is prose.** Most PRs are 1–4 tight paragraphs, no section headers. Open one of three ways:
+Prose paragraphs with no section headers, for nearly every PR.
 
-- **"This diff <verb>s …"** — his most common opener. "This diff consolidates …", "This diff adds …", "This diff wraps …", "This diff gates …".
-- **Bare imperative** for small changes — "Adds …", "Bumps …", "Swaps …", "Removes …", "Moves …", "Fixes …".
-- **The problem first** for bugs/ops — "The QA deploy has never succeeded: …", "Nodes have less memory than expected …", "Edits to public lots with existing LME bids return 422 in QA: …".
+- The first sentence states the problem, meaning what was broken, missing, or costly. "Concurrent first logins for the same email could return 500." For a change with no problem story (a version bump, checked-in configs), open with what it does and keep the whole thing to a few sentences.
+- Then the reasoning, as readable prose. How the problem arises, what the fix does about it, and why this shape rather than another. Use first person for judgment calls ("I chose X over Y because...").
+- Weight tracks the story, not the diff or the effort behind it. A subtle bug earns three or four paragraphs. A config bump earns two sentences even when hours of debugging led there.
+- Name a symbol when it is the point (the exception raised, the flag that was wrong), not to prove you read the code.
+- Per writing.md's freshness rule, note the doc-review outcome when the change alters behavior or architecture ("No doc updates needed; nothing documents the removed error type.").
 
-The floor is ~three sentences: what it checks in or changes, what that enables (intent level — "allows running tests using the debugger", not the settings keys), and the impact line. A tooling PR that fits in three sentences should stay three sentences.
+Sections only when the diff needs a map. A very large PR uses ## headers named after subsystems, opens with a TLDR naming what the bulk of the lines are (generated code, vendored assets, a mechanical rename), and states what it deliberately does not do. When a template is imposed (e.g. running under /ship), write its ## Why and ## What in this voice and omit any section you would otherwise pad.
 
-Then, as needed:
-- **State the goal** — "Goal is to <intent>." — and the **prior broken state** — "Previously, <what was wrong>." Ben explains *why*, and what the world looked like before, not just the mechanism.
-- **"Also <verb>s …"** for secondary changes ("Also refactors …", "Also fixes a bug where …").
-- **End with verification** (see below) and **refs** (see below).
+## Verification
 
-**For a large diff, answer "do I have to read all of this?" first.** Open with a `TLDR:` naming what the bulk of the lines are (generated code, vendored assets, a mechanical rename) and the ✅ verification, then a **Scope** statement of what the PR deliberately does not do. See rad-rwos#62.
+Almost never include a verification line. Lint, tests, type checks, and CI runs are assumed, and reporting them adds nothing. Include verification only when it is a human-in-the-loop step the reviewer cannot infer and it would establish trust, like "Deployed to QA and verified the full badge-login flow" or "Checked the hover state in the 480×800 scanner preview."
 
-**Sectioned only when the change earns it.** For a large or multi-part PR, use `##` headers named after the *subsystems* (`## Postgres: Database abstraction`, `## Query interface: t-strings`, `## Also in this PR`) — not the generic Why/What/Summary/Test-plan scaffold. A focused bug fix can use a minimal `## Problem` / `## Fix` / `## Testing`. The test: would a reviewer need a map to navigate this diff? If not, prose.
-
-`## Testing` and `## Risks / follow-ups` sections don't survive Ben's edit even when populated. Verification folds to the one ✅ line (see below); a genuine risk becomes one candid sentence in the prose, not a section of preconditions and caveats.
-
-When a fixed template *is* imposed on you (e.g. running under /ship, which keeps `## Why` / `## What` / `## Testing` / `## Risks / follow-ups` / `## Related`), write `## Why` / `## What` in this voice — terse, concrete, no hedging — treat `## Testing` as one line, and omit `## Risks / follow-ups` entirely unless there's a real blocker. **Omit a section rather than pad it.** A one-line "## Why" beats three sentences of restatement.
-
-## Restraint — the reviewer reads the diff
-
-This is where drafts go wrong: they narrate the diff instead of summarizing intent. The reviewer will read the code. Your job is to give the essence — what changed and why — and trust them for the rest. Abstract the mechanism to one clause; do not walk through each code path, name every function touched, or enumerate each config value unless a reviewer genuinely can't follow the diff without it. A small or medium PR is usually two or three sentences. When you've written a bulleted breakdown of each branch, stop and ask whether one sentence captures the intent — it almost always does, and that's the version to ship.
-
-Contrast, same real PR (fixing a draft-lot crash):
-
-- **Over-narrated (cut this):** "`deleteDraft` and `publishDraft` both called `queryClient.removeQueries()` after the mutation, which invalidated the still-mounted `useSuspenseQuery(getDraftLotsOptions())` observer and forced a refetch … Delete invalidates the draft lots list with `refetchType: 'none'` … Publish additionally invalidates the public lots list …" — three paragraphs re-deriving the diff.
-- **Ben's actual version:** "Publishing or deleting a draft lot from the edit page could crash … when the draft cache was cleared while the edit form was still reading from it. This reorders the cache refresh so the destination page's data is primed and the draft list is only refreshed once the edit form is no longer reading it." — two sentences: the symptom, the essence of the fix. Then the Sentry link.
-
-The reviewer who wants the `refetchType: 'none'` detail reads the diff. Name a specific symbol only when it *is* the point (the failing exception, the one flag that was wrong), not to prove you understood the change.
-
-**Weight tracks the diff, not the effort.** The description scales with what the reviewer must absorb, not with how long the investigation took. A 4-line helm values bump gets one or two sentences even when hours of debugging led there — the root-cause narrative, the alternatives considered, and the "worth a glance before prod" caveats all get cut in edit. "Root causes are first-class content" applies to bug fixes where the symptom is the story, not to config bumps a reviewer can see whole. Real example: a CPU-limit change shipped as exactly "Bumps the scanner-ui and web-ui nginx pods from `cpu: 100m` request == limit to `250m` request / `1` limit. Memory is unchanged." — four paragraphs of throttling analysis deleted.
-
-When a design choice needs justifying, use **first person** — "I opted for this approach instead of downgrading git on the runners since I think it's more maintainable" — not a detached "The trade-off is deliberate." The judgment is yours; say so.
-
-## Voice
-
-- **Be specifically technical.** Name the exact mechanism, exception, flag, version, or failure mode: `ImageTagAlreadyExistsException`, `--atomic` implies `--wait`, `machine_labels` vs `labels`, "autoStep() returns a string like `30s`". Precision is the whole value; vagueness wastes the reviewer's time.
-- **Explain the prior state and the why.** "Previously helm returned as soon as the API server accepted the manifests, so CD reported success even when pods crashlooped." Root causes are first-class content.
-- **Be candid.** Flag what isn't done or isn't sure: "I have not yet validated the behavior of …", "WIP …", "Draft until verified: …", "Hacky grep addition but it fills a void that ruff and pyright don't." Honesty over polish.
-- **First person where it's natural** — "I opted for this approach since I think it's more maintainable", "I removed view_samples.py since I think it's redundant now", "I flagged the underlying runner issue to DevOps".
-- **Name people** for support dependencies and confirmations — "This will require Darren's support for vGPU binding", "✅ Verified this is expected behavior with @Ankit-Redwood", "@corylotze-rw can you deploy this then merge?".
-- **Emdashes are fine** (unlike his Slack status posts). Use them freely.
-- **No LLM fluff, meta-commentary, or discovery narration.** Cut leverage/utilize/robust/seamless/comprehensive/significant/successfully; cut "load-bearing"/"critical"/"key"/"genuinely"; cut "testing surfaced that"/"it turned out"/"we found that" — state the cause and fix directly. (This mirrors the always-on writing-voice guidance.)
-- **Never fabricate.** No invented metrics, user counts, or ticket numbers. State only what's real; if impact is unknown, say what the change enables and stop.
-
-## Verification — how Ben closes a PR
-
-He ends with what he actually ran, not a checklist of intentions:
-
-- **`✅ Verified <what>`** with the real command in a code block, or a screenshot dragged in, or a link to the CI run:
-  > ✅ Verified lint command succeeds against core lib with:
-  > ```
-  > TcAutomation.exe lint --solution rw-core.sln
-  > ```
-- Or a flat statement when that's the whole story: **"No behavioral changes."**, **"Backward-compatible change."**, **"No source changes were needed — …"**. For dev-tooling, config, or CI changes with no runtime effect, that flat statement is the *entire* close — don't invent a ✅ command for a change nothing executes. Checked-in editor configs, lint settings, and docs need an impact statement, not a verification block.
-- If it's not verified, say so plainly ("Draft until verified: this depends on the runner having a usable local builder, which I can't confirm from here").
-
-Never a `## Testing` section with a bulleted command log — Ben deletes those wholesale even when accurate, and the `- [ ]` checkbox variant is worse. One ✅ line carrying the single highest-signal check; lint/type-check/unit-test runs are assumed and not listed unless one *is* the point. For user-facing changes checked in an environment, the whole close can be "✅ Manually verified expected behavior in QA."
+What is not verified matters more. Say plainly when something is untested, WIP, or blocked ("Draft until verified: this depends on the runner having a usable local builder, which I can't confirm from here").
 
 ## Refs
 
-At the end, bare and terse — not prosified:
-- Jira: `RAD-1246` on its own line (not "Fixes RAD-1246").
-- Issues/PRs: `Closes #17`, `See #274`, `Stacked on #28`, `Depends on #10`. Describe stacking relationships when relevant ("finishing the consolidation started in #13 and #15").
-- Links to related PRs across repos, or the Slack thread that drove it, as full URLs.
+At the end, bare and terse. `RAD-1246` on its own line, `Closes #17`, `See #274`, `Stacked on #28`, full URLs to related PRs in other repos or the Slack thread that drove the change.
 
 ## Title
 
-Imperative and searchable — `[verb] [what] [where/why]` ("Replace runner hard-kill with graceful TwinCAT process cleanup"), or a conventional-commit prefix when the repo uses them (`feat(scanner): …`, `fix(adapters): …`, `docs: …`). Never "fix bug" or "updates".
+Imperative and searchable, shaped like verb, what, where ("Replace runner hard-kill with graceful TwinCAT process cleanup"), or a conventional-commit prefix when the repo uses them (`fix(users): ...`, `docs: ...`). Never "fix bug" or "updates".
 
-## Worked examples (real, self-authored)
+## Examples
 
-**Short, tooling-only — the whole description:**
-> Add vscode tool configs
+A bug fix. Problem in the first sentence, then the mechanism and the reasoning as prose, and no verification line because the tests speak for themselves:
+
+> Concurrent first logins for the same email could return 500. The user lookup runs in one transaction that reads, inserts on a miss, and reads again if the insert loses a race. When two first logins arrive together, both reads miss and both insert. Postgres marks the loser's transaction failed the moment its insert violates the unique constraint, so the recovery read runs inside a dead transaction and raises `InFailedSqlTransaction` instead of returning the winner's row.
 >
+> The fix treats the conflict as an expected outcome rather than an exception. `create_user_for_email` now inserts with `ON CONFLICT (email) DO NOTHING` and returns `None` when the row already exists. Nothing raises, the transaction stays healthy, and the follow-up read returns the winner's row. I chose this over wrapping the old insert in a savepoint because it's a single statement and it retires `UserAlreadyExistsError` entirely.
+>
+> The race only exists on the first login for a given email, which is why sequential tests never caught it. The new test reproduces it deterministically. One transaction inserts the row and holds it uncommitted, a second calls `get_or_create_user` for the same email and blocks on the conflict, and the holder commits once `pg_stat_activity` shows the caller waiting on the lock.
+>
+> No doc updates needed. The fix is internal to the users service and nothing documents the removed error type.
+
+A small UI fix, where the one verification line is a manual check the reviewer can't infer:
+
+> Hovering a red Cancel button in the receiving flow kept the red background tint but flipped the label to near-black, which read like a different button. The buttons use the `ghost` variant, whose `hover:text-foreground` rule wins on hover.
+>
+> Adding `hover:text-red-600` overrides that. The text stays red and darkens one shade for contrast against the hover tint. Affects the session-hub Cancel and the container-form Cancel.
+>
+> ✅ Checked the hover state in the 480×800 scanner preview.
+
+Tooling with no problem story. Opens with what it does and stops:
+
 > Checks in vscode configs to auto-configure python and typescript tools.
 >
-> This configures static analysis tools across frontend/backend file types for working in the IDE, and test runner configs that allow running tests using the debugger.
+> This configures static analysis across frontend and backend file types for working in the IDE, plus test runner configs that allow running tests under the debugger.
 >
 > No behavioral changes.
 
-Four files changed, none named; no ✅ needed because nothing runs.
+Candid about what isn't done:
 
-**Small, prose, verified:**
-> Keep red cancel button text red on hover
+> Workflows need Python on the runner only because `bluegreen-deploy` is a standalone script. This folds it into `TcAutomation` as a `bluegreen` subcommand family, so every tool ships in `TcAutomation.exe` and the Python dependency goes away.
 >
-> The red Cancel buttons in the receiving flow use the `ghost` button variant, whose `hover:text-foreground` rule wins on hover. So hovering a Cancel button kept the red background tint but flipped the label from red to near-black, which read like a different button.
->
-> Adding `hover:text-red-600` overrides that, so the text stays red and darkens one shade for contrast against the `bg-red-500/10` hover tint. Affects the session-hub Cancel and the container-form Cancel.
->
-> ✅ Verified in the 480×800 scanner preview: base text is red-500 and the hover rule resolves to red-600.
-
-**Bug, root-cause first:**
-> Make BatteryRepo.set writes atomic via Redis transaction
->
-> This diff wraps the three Redis commands in `BatteryRepo.set` (`HSETNX created_at`, `HSET mapping`, `EXPIRE`) in a `MULTI`/`EXEC` transaction so concurrent readers can never observe a partial battery hash. Previously, load tests intermittently surfaced `union_tag_not_found` Pydantic errors because the dashboard's scan caught a freshly-created hash between the `HSETNX` and `HSET`, when only `created_at` was populated and the `state` discriminator was missing.
->
-> The race window only exists for the first write of each new battery, which is why the failure was rare and load-dependent. A regression test injects a delay on the standalone `hset` path to deterministically reproduce the original bug.
-
-**Candid / not-yet-verified:**
-> This diff folds the standalone `bluegreen-deploy` tool into `TcAutomation` as a new `bluegreen` subcommand family. Workflows no longer need Python on the runner now that all tools are in `TcAutomation.exe`.
->
-> I have not yet validated the behavior of the `bluegreen` and `deploy` subcommands. Goal is to do that next from the LH runner machine. CI currently expected to fail due to ongoing firewall troubleshooting with the BMC runners.
+> I have not yet validated the `bluegreen` and `deploy` subcommands. Goal is to do that next from the LH runner machine. CI is currently expected to fail due to ongoing firewall troubleshooting with the BMC runners.
 >
 > Closes #16
-
-**Large, domain-named headers** (only for a PR this big): see `rad-core#9` — sections like `## Postgres: Database abstraction`, `## Query interface: t-strings`, `## Also in this PR`, closing with a bare `RAD-1106`.

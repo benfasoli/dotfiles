@@ -10,7 +10,8 @@ description: Reader-first standard for improving a project's documentation with 
 The goal is better docs, not more docs. A pass succeeds when a reader gets what they need
 faster — often by cutting, consolidating, reordering, or rewriting rather than adding. Adding
 nothing is a valid outcome, and cutting stale or low-value docs is good — but don't equate fewer
-docs with better ones.
+docs with better ones. Prose style for the docs themselves follows `~/.claude/docs/writing.md`
+(voice, and the narrative/technical mode split).
 
 ## Write for the reader (the test everything else serves)
 Every rule below answers one question: what does *this reader* need next, and at what level? When
