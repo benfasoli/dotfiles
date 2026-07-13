@@ -1,6 +1,8 @@
 {
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "CLAUDE_CODE_FORK_SUBAGENT": "1",
+    "CLAUDE_CODE_GLOB_NO_IGNORE": "false",
     "CLAUDE_ENV_FILE": "/Users/benfasoli/.zshenv"
   },
   "attribution": {
@@ -42,6 +44,7 @@
   "enabledPlugins": {
     "pyright-lsp@claude-plugins-official": true
   },
+  "advisorModel": "fable",
   "alwaysThinkingEnabled": true,
   "effortLevel": "xhigh",
   "tui": "fullscreen"
