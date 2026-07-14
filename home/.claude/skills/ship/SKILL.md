@@ -151,9 +151,12 @@ Per the `pr-description` skill: imperative and searchable, never "fix bug" or
 ### PR description — describe INTENT (why), kept to the 5-minute rule
 
 Write the prose per the `pr-description` skill
-(`~/.claude/skills/pr-description/SKILL.md`). Keep the section headers below,
-but **omit a section rather than pad it** — a one-line "## Why" beats three
-sentences of filler, and a routine PR does not need every section.
+(`~/.claude/skills/pr-description/SKILL.md`), which sizes the description to what
+the reviewer needs. Most PRs are a few sentences to a couple of short paragraphs
+of prose with no headers. Use the section headers below only when the diff is
+complex enough to need a map, following that skill's trigger list, and even then
+omit any section you would otherwise pad. Screenshots are the one exception.
+Include them for any UI change regardless of size.
 
 ## Why
 
