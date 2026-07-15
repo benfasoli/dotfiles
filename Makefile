@@ -1,8 +1,8 @@
 DOTFILES := $(HOME)/repos/dotfiles
 
-.PHONY: install zsh git vim claude brew
+.PHONY: install zsh git vim claude copilot brew
 
-install: zsh git vim claude
+install: zsh git vim claude copilot
 
 zsh:
 	ln -sfn $(DOTFILES)/home/.zshrc  $(HOME)/.zshrc
@@ -28,6 +28,10 @@ claude:
 	ln -sfn $(DOTFILES)/home/.claude/skills/improve-docs   $(HOME)/.claude/skills/improve-docs
 	ln -sfn $(DOTFILES)/home/.claude/skills/weekly-status  $(HOME)/.claude/skills/weekly-status
 	ln -sfn $(DOTFILES)/home/.claude/hooks/block-out-of-project-edits.py $(HOME)/.claude/hooks/block-out-of-project-edits.py
+
+copilot:
+	mkdir -p $(HOME)/.copilot
+	ln -sfn $(DOTFILES)/home/.copilot/copilot-instructions.md $(HOME)/.copilot/copilot-instructions.md
 
 brew:
 	brew bundle --file=$(DOTFILES)/Brewfile

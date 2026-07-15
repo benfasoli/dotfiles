@@ -1,8 +1,8 @@
 # dotfiles
 
-Personal macOS development environment: shell, git, vim, terminal, and Claude
-Code configuration, kept in version control and symlinked into `$HOME` by a
-single `make install`.
+Personal macOS development environment: shell, git, vim, terminal, Claude Code,
+and GitHub Copilot configuration, kept in version control and symlinked into
+`$HOME` by a single `make install`.
 
 ## Fresh machine setup
 
@@ -52,6 +52,7 @@ make zsh
 make git
 make vim
 make claude   # links CLAUDE.md, settings.json, docs/, and bundled skills
+make copilot  # links personal Copilot instructions
 ```
 
 Install or update CLI tools:
