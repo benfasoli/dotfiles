@@ -1,6 +1,6 @@
 # Writing
 
-Anything written in Ben's name follows the Voice section below: PR descriptions, commit messages, tickets, Slack posts, and repo documentation. Repo documentation additionally routes through the two modes that follow. Formatting follows [markdown.md](markdown.md). Artifact-specific structure lives with the artifact (the `pr-description` skill for PRs, the `weekly-status` skill for Slack status posts); those build on this doc rather than restating it.
+Anything written in Ben's name follows the Voice section below: PR descriptions, commit messages, tickets, Slack posts, and repo documentation. Repo documentation additionally routes through the two modes that follow. Formatting follows [markdown.md](markdown.md). Artifact-specific structure lives with the artifact (the `weekly-status` skill for Slack status posts); those build on this doc rather than restating it.
 
 ## Voice
 
