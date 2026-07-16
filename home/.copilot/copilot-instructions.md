@@ -12,6 +12,6 @@
 
 ## Pull request descriptions
 
-- Omit a `Validation` section when it would mostly repeat routine automated checks already run in CI, such as linting, tests, migration checks, client checks, or similar checks.
-- Include `Validation` only for high-value, non-obvious evidence that helps reviewers assess the change, such as targeted manual reproduction, environment-specific verification, production-data checks, or benchmarks.
+- Omit any section that mostly enumerates routine automated checks already run in CI, such as linting, tests, migration checks, client checks, or similar checks. This applies regardless of whether the section is named `Validation`, `Testing`, `Checks`, or something similar.
+- Include a validation or testing section only for high-value, non-obvious evidence that helps reviewers assess the change, such as targeted manual reproduction, environment-specific verification, production-data checks, or benchmarks.
 - When included, keep it concise and explain the confidence gained instead of listing routine commands.
