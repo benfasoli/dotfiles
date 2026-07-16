@@ -9,3 +9,9 @@
 - Before implementing medium- or low-priority feedback, scope-expanding hardening, architectural changes, or speculative edge cases, summarize the practical risk, likelihood, implementation scope, tradeoffs, and recommendation, then ask me to decide.
 - When I ask to "review PR comments," triage and report them without implementing changes unless I explicitly ask to address them. Include a suggestion of what comments are worthwhile to immediately address.
 - An unresolved review thread does not imply that code must change. If I decide to defer or reject feedback, reply with the rationale and resolve the thread.
+
+## Pull request descriptions
+
+- Omit a `Validation` section when it would mostly repeat routine automated checks already run in CI, such as linting, tests, migration checks, client checks, or similar checks.
+- Include `Validation` only for high-value, non-obvious evidence that helps reviewers assess the change, such as targeted manual reproduction, environment-specific verification, production-data checks, or benchmarks.
+- When included, keep it concise and explain the confidence gained instead of listing routine commands.
