@@ -27,6 +27,7 @@
       "Bash(sudo  *)"
     ]
   },
+  "model": "claude-opus-5[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -44,8 +45,10 @@
   "enabledPlugins": {
     "pyright-lsp@claude-plugins-official": true
   },
-  "advisorModel": "fable",
   "alwaysThinkingEnabled": true,
-  "effortLevel": "xhigh",
-  "tui": "fullscreen"
+  "effortLevel": "medium",
+  "advisorModel": "fable",
+  "tui": "fullscreen",
+  "skipWorkflowUsageWarning": true,
+  "switchModelsOnFlag": true
 }
