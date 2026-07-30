@@ -1,17 +1,17 @@
 # Python
 
-Language-level style applies to all Python. The **Backend services** section applies only to HTTP services of the FastAPI + Postgres shape — skip it for libraries, CLIs, and scripts. SQL and schema conventions live in [sql.md](sql.md); the reasoning behind the architectural choices here lives in [engineering.md](engineering.md).
+Language-level style applies to all Python. The **Backend services** section applies only to HTTP services of the FastAPI + Postgres shape; skip it for libraries, CLIs, and scripts. SQL and schema conventions live in [sql.md](sql.md); the reasoning behind the architectural choices here lives in [engineering.md](engineering.md).
 
-Lean on tooling to enforce what it can — ruff for formatting and lint, a type checker in standard mode, a fixed line length — and treat the rest as convention.
+Lean on tooling to enforce what it can (ruff for formatting and lint, a type checker in standard mode, a fixed line length) and treat the rest as convention.
 
 ## Style
 
 ### Docstrings
 
-Google style. A few rules to hold to:
+Google style, with a few rules to hold to:
 
-- **Summary fits on the opening line**, right after the opening quotes, and is minimally descriptive — say what the thing does, not how.
-- **Don't duplicate the signature.** Types already live in the annotations; don't restate them in the docstring.
+- **Summary fits on the opening line**, right after the opening quotes, and says what the thing does, not how.
+- **Don't duplicate the signature.** Types already live in the annotations.
 - **`Args:` for anything with more than ~2 parameters.** A one- or two-argument function whose names are self-explanatory doesn't need one; past that, document each parameter.
 - **Be pedantic about `Raises:`.** Python has no checked exceptions, so the docstring is the only place a caller learns which exceptions to expect and handle. List every exception the function raises on purpose.
 
@@ -31,13 +31,13 @@ def close_resource(ctx: Context, resource_id: UUID) -> None:
 
 ### Naming and layout
 
-- **Exception variables are `exc`, not `e`** — in `except` clauses and when re-raising with `from exc`.
+- **Exception variables are `exc`, not `e`**, in `except` clauses and when re-raising with `from exc`.
 - **Method order within a class**: `__init__` first, then public methods alphabetically, then private methods alphabetically.
 
 ### Typing
 
-- **Type everything.** No untyped dicts and no `dict[str, object]` standing in for a structured value. Use specific types for actual usage, not theoretical broadness.
-- **Prefer a Pydantic model** for request/response shapes and anything crossing a trust boundary, where runtime validation earns its keep. A plain dataclass is fine when no runtime type validation is needed — internal value objects, simple carriers wired up in code.
+- **Type everything.** No untyped dicts and no `dict[str, object]` standing in for a structured value. Type for actual usage, not theoretical broadness.
+- **Prefer a Pydantic model** for request/response shapes and anything crossing a trust boundary, where runtime validation applies. A plain dataclass is fine when no runtime validation is needed: internal value objects, simple carriers wired up in code.
 
 ### Exceptions
 
@@ -61,15 +61,15 @@ class InvalidOperationError(AppError):
 
 ## Backend services (FastAPI + Postgres)
 
-Conventions for HTTP services backed by Postgres. The principles underneath — keeping the domain independent of its delivery mechanism, durable side-effects, testing against real dependencies — are in [engineering.md](engineering.md).
+Conventions for HTTP services backed by Postgres. The principles underneath (keeping the domain independent of its delivery mechanism, durable side-effects, testing against real dependencies) are in [engineering.md](engineering.md).
 
 ### Architecture: core + adapter
 
 Split the system into a **core** that owns business rules, domain models, and persistence, and one or more **adapters** that own a delivery mechanism (an HTTP server, a CLI, a queue worker, a scheduled job).
 
-- Core is plain synchronous Python and imports no web framework. Each domain is a sub-package whose `__init__.py` exposes its public surface — service functions, domain models, exceptions. Implementation lives in underscore-prefixed private modules that other packages must not import across the boundary.
+- Core is plain synchronous Python and imports no web framework. Each domain is a sub-package whose `__init__.py` exposes its public surface: service functions, domain models, exceptions. Implementation lives in underscore-prefixed private modules that other packages must not import across the boundary.
 - Adapters own their entry point and runtime concerns (request/response shapes, authentication, process lifespan), then delegate to core. **Dependencies point inward: adapters import core, never the reverse.**
-- Core declares what it needs from the outside world as a per-service `Protocol` (a `Context` carrying `db`, clock, HTTP clients, config). An adapter builds one concrete, application-scoped context at startup and passes it unchanged into every core call. The context carries only application-scoped, thread-safe infrastructure — anything request- or operation-scoped (caller identity, a request id, route params) is passed as an explicit argument.
+- Core declares what it needs from the outside world as a per-service `Protocol` (a `Context` carrying `db`, clock, HTTP clients, config). An adapter builds one concrete, application-scoped context at startup and passes it unchanged into every core call. The context carries only application-scoped, thread-safe infrastructure. Anything request- or operation-scoped (caller identity, a request id, route params) is passed as an explicit argument.
 
 ### Concurrency
 
@@ -80,23 +80,23 @@ Pick one concurrency model and keep the whole call graph in it; don't mix `async
 Keep three lifetimes distinct rather than conflating them through one dependency mechanism:
 
 - **Request lifecycle** is the adapter's (request received → response sent).
-- **Connection lifetime** is the database's — a connection is checked out for the duration of a `transaction()` block and returned on exit.
+- **Connection lifetime** is the database's. A connection is checked out for the duration of a `transaction()` block and returned on exit.
 - **Transaction boundary** is the **service layer's**. A handler calls one service function per business operation; that function opens the transaction around the unit of work. Handlers and repositories never open transactions.
 
 One business operation is one local transaction. Don't coordinate work across services with sagas or distributed transactions; decompose so each step commits locally and follow-on work flows through a durable queue.
 
 ### Repositories
 
-One repository per **aggregate** — the unit loaded and saved as a whole, and the boundary within which data stays consistent. Repositories speak only in domain models and translate database constraint violations into domain errors; they never enforce business rules. The service layer reads an aggregate, applies the rules (as behavior on the domain model that raises on an illegal transition), then calls repositories to persist.
+One repository per **aggregate**, the unit loaded and saved as a whole and the boundary within which data stays consistent. Repositories speak only in domain models and translate database constraint violations into domain errors; they never enforce business rules. The service layer reads an aggregate, applies the rules (as behavior on the domain model that raises on an illegal transition), then calls repositories to persist.
 
 A command/query split and a fixed verb vocabulary carry the contract:
 
-- **`get_<aggregate>`** — fetch one that must exist; raises `NotFoundError` if absent.
-- **`find_<aggregate>`** — fetch one that may legitimately be missing; returns `None`.
-- **`list_<aggregate>s`** — fetch zero or more; returns a list.
-- **`create_` / `update_` / `delete_`** — take a domain model, return nothing; `update`/`delete` raise `NotFoundError` when absent.
+- **`get_<aggregate>`** fetches one that must exist; raises `NotFoundError` if absent.
+- **`find_<aggregate>`** fetches one that may legitimately be missing; returns `None`.
+- **`list_<aggregate>s`** fetches zero or more; returns a list.
+- **`create_` / `update_` / `delete_`** take a domain model and return nothing; `update`/`delete` raise `NotFoundError` when absent.
 
-Reads return the whole aggregate — no status-only projections; the service inspects it in memory. The service generates ids, timestamps, and sequence values before calling `create`/`update`.
+Reads return the whole aggregate, with no status-only projections; the service inspects it in memory. The service generates ids, timestamps, and sequence values before calling `create`/`update`.
 
 ### HTTP API
 
@@ -111,18 +111,18 @@ Reads return the whole aggregate — no status-only projections; the service ins
 | 400  | Malformed or unbindable request (invalid JSON, missing fields) |
 | 404  | Referenced entity not found |
 | 409  | Conflict with existing state |
-| 422  | Validation error — well-formed input that failed a business rule |
+| 422  | Validation error: well-formed input that failed a business rule |
 
-The `400`/`422` line: **`422` is a well-formed request whose value failed a rule or precondition; `400` is a request the framework couldn't even bind.**
+The `400`/`422` line: **`422` is a well-formed request whose value failed a rule or precondition; `400` is a request the framework couldn't bind at all.**
 
-Handlers stay thin — parse input, call one service function, translate domain exceptions into `HTTPException`:
+Handlers stay thin. Parse input, call one service function, translate domain exceptions into `HTTPException`:
 
 ```python
 except EntityNotFoundError as exc:
     raise HTTPException(status_code=404, detail=str(exc)) from exc
 ```
 
-Shape errors so clients can react programmatically — the exception class name, a human detail, and the exception's data attributes:
+Shape errors so clients can react programmatically, carrying the exception class name, a human detail, and the exception's data attributes:
 
 ```json
 { "error": "EntityNotFoundError", "detail": "resource '...' not found", "context": { "resource_id": "..." } }
@@ -130,10 +130,10 @@ Shape errors so clients can react programmatically — the exception class name,
 
 ### Testing
 
-Test against a real Postgres in Docker, exercising the same persistence code that ships — see [engineering.md](engineering.md) on testing against real dependencies.
+Test against a real Postgres in Docker, exercising the same persistence code that ships. See [engineering.md](engineering.md) on testing against real dependencies.
 
 - **Test through the HTTP API (black box).** Drive behavior as a client would: a `POST`, then assert the response and the resulting state.
-- **Don't mock core behavior.** It couples tests to implementation and hides real behavior. Reach error and edge states through real calls — e.g. `POST` the same entity twice to hit the duplicate path. Matching dynamic values (UUIDs, timestamps) with a wildcard is fine.
+- **Don't mock core behavior.** It couples tests to implementation and hides real behavior. Reach error and edge states through real calls, e.g. `POST` the same entity twice to hit the duplicate path. Matching dynamic values (UUIDs, timestamps) with a wildcard is fine.
 - **Build request bodies from the typed request models**, not hand-written dicts, so required fields are type-checked.
 - **Generate unique ids** (`uuid.uuid4()`) to avoid cross-test interference, and detect async tests automatically rather than decorating each one.
 

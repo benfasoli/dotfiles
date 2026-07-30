@@ -1,6 +1,6 @@
 # Writing
 
-Anything written in Ben's name follows the Voice section below: PR descriptions, commit messages, tickets, Slack posts, and repo documentation. Repo documentation additionally routes through the two modes that follow. Formatting follows [markdown.md](markdown.md). Artifact-specific structure lives with the artifact (the `weekly-status` skill for Slack status posts); those build on this doc rather than restating it.
+Anything written in Ben's name follows the Voice section below: PR descriptions, commit messages, tickets, Slack posts, and repo documentation. Repo documentation additionally routes through the two modes that follow. Formatting follows [markdown.md](markdown.md). Artifact-specific structure lives with the artifact, such as the `weekly-status` skill for Slack status posts.
 
 ## Voice
 
@@ -27,8 +27,8 @@ Patterns that read as generated text. Avoid them everywhere.
 
 Two modes, routed by artifact type.
 
-- **Narrative** — README introductions and overviews, design-note context sections, retrospectives, historical commentary.
-- **Technical** — API and reference docs, semantic rules, compatibility tables, tests, implementation notes, docstrings, error messages, code comments.
+- **Narrative**: README introductions and overviews, design-note context sections, retrospectives, historical commentary.
+- **Technical**: API and reference docs, semantic rules, compatibility tables, tests, implementation notes, docstrings, error messages, code comments.
 
 When a document fits neither list, use technical mode. Narrative is the exception, not the default. One document can use both; a README opens in narrative mode and switches to technical at the first usage section.
 
@@ -49,7 +49,7 @@ Calibration, the same README opening rewritten under these rules:
 
 > BASIC is small enough to hold in your head and strange enough to remind you that your head is not a standards committee.
 
-The first is adjectives; the second is two verifiable claims and the wit is one of them.
+The first is adjectives; the second is two verifiable claims, and the wit is one of them.
 
 ### Technical mode
 
@@ -66,7 +66,7 @@ Calibration:
 
 > GOSUB pushes the next statement position onto the call stack. RETURN resumes from that position. Returning with an empty stack is an error.
 
-Three sentences covering behavior, behavior, and the error case. Nothing to cut.
+Behavior, behavior, error case, with nothing to cut.
 
 ## Documentation freshness
 
