@@ -27,7 +27,6 @@
       "Bash(sudo  *)"
     ]
   },
-  "model": "claude-opus-5[1m]",
   "hooks": {
     "PreToolUse": [
       {

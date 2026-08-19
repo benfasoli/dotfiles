@@ -22,8 +22,5 @@ export C_INCLUDE_PATH="/opt/homebrew/opt/python3/Frameworks/Python.framework/Hea
 # preempt PATH with user-scoped installs
 export PATH="$HOME/.local/bin:$PATH"
 
-# source uv
-. "$HOME/.cargo/env"
-
 # source per-machine overrides if present
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
