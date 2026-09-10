@@ -52,8 +52,6 @@ prshare() {
 # show tree view of git branch / commit history
 alias githistory="git log --oneline --decorate --graph --all"
 
-alias k9s="k9s --splashless"
-
 alias ls="lsd"
 
 alias hidedesktop="defaults write com.apple.finder CreateDesktop false && killall Finder"
