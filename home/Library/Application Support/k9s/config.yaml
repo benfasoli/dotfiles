@@ -1,0 +1,8 @@
+k9s:
+  refreshRate: 2
+  apiServerTimeout: 15s
+  maxConnRetry: 3
+  skipLatestRevCheck: true
+  defaultView: deployments
+  ui:
+    splashless: true
