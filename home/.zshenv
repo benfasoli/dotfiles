@@ -24,3 +24,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # source per-machine overrides if present
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
+
+# allow assume to update shell credentials
+alias assume=". assume"
