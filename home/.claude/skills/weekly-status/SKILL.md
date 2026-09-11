@@ -117,19 +117,28 @@ Lead with the label, then say what changed in concrete terms, then fold in the c
 
 Credit collaborators inline, first names only: `(with Conner)`, `Worked with Micah + Ian`, `confirmed expected behavior with Ankit`. Full names read as formal in a Slack post where everyone shares the workspace. Collaborator names often live in thread replies rather than authored messages — read the thread before writing a collaboration bullet. Cluster related PRs into one bullet.
 
-**Every bullet is one sentence by default — this is where drafts go wrong.** What changed, plus a short "so" consequence if it isn't obvious. Then stop. A second sentence is rare: reserved for the week's single biggest item, and most reports have none at all. If you are writing a second clause of detail on an ordinary bullet, you are writing the version the author deletes. A real section:
+**Every bullet is one line, and short. This is where drafts go wrong.** Hard caps, counted before the links: 12 words per bullet, of which the "so" clause is at most 6. Label, tight noun phrase for what changed, optional "so" clause, links. Fragments beat sentences. Drop the "so" clause when the noun phrase already implies the consequence ("OTM retry backoff and per-attempt timing logs" needs none). When clustering PRs, name at most two sub-items as bare noun phrases; the links carry the rest. A second sentence appears at most once per report, for the single biggest item. A real section at target length:
 
 ```
 *Redwood OS*
-- Shipped: Merged rad-rwos-frontend into rad-rwos as a monorepo: one CDK stack, one CI/CD pipeline, and one `make serve` dev loop across all four servers, so coordinated frontend/backend changes ship as one PR instead of two synchronized ones. [rad-rwos#59](url)
-- Shipped: Email/password sign-in on the scanner alongside badge tap. Stakeholders can demo from a desktop browser with no badge reader, and scanner users can still sign in if they forget their badge. [frontend#38](url)
-- Shipped: Operators now select a facility and business operation after sign-in. [frontend#39](url)
-- Worked with Micah + Ian on the scanner PWA update strategy: detect an index.html diff between browser and server, reload during reload-safe navigations.
+- Shipped: receiving part suggestions tiered by BOL and supplier contract, so operators skip the full catalog. [rad-rwos#828](url)
+- Shipped: supplier name and code from OTM shipments (with Micah + Milan), so receiving knows which supplier sent the shipment. [rad-rwos#817](url)
+- Shipped: sign-in survives reloads and scanner restarts, so no more hourly sign-outs. [rad-rwos#795](url)
+- Shipped: OTM retry backoff and per-attempt timing logs. [rad-rwos#812](url), [rad-rwos#826](url)
+- Worked with Bryan, Andrew, and Milan on outbound: picking is a move to the load's staging location. [thread](url)
+- Risk: D365 PO creation fails without part numbers; receipts cannot sync until a parts sync lands.
 ```
 
-The first bullet's depth is the deliverable itself (the monorepo shape); the auth bullet spends its second sentence on who benefits, not on Okta internals. The generated draft of that auth bullet read: "The shared 'any 2 factor types' Okta policy let a Verify push satisfy both factor slots and skip the password; forced `prompt=login` on that redirect to require it." Accurate, interesting to an engineer — and the author cut it. The failure mechanics live in the PR; the post carries the capability.
+The first draft of that section ran twice as long, and the author asked for half. The trims that got there:
 
-Advisory, collaboration, and onboarding bullets stay short — name who and what was decided, scoped, or handed off, in one clause. Do not reproduce the design you discussed. "Worked with Tyler and Enrique to scope NuGet CodeArtifact distribution for rw-twincat-core" is the whole bullet; the API shapes and class names that came up in the thread do not belong in the report.
+- "receiving part suggestions grouped into "on this BOL" and "supplier contracts" tiers in scanner and web, so operators pick from a short relevant list instead of the full catalog" (28 words) became "receiving part suggestions tiered by BOL and supplier contract, so operators skip the full catalog" (14). Quoted UI labels, surface list, and the restated benefit all went.
+- "sign-in now survives reloads and scanner background restarts, so users are no longer signed out an hour after last renewal" (20) became "sign-in survives reloads and scanner restarts, so no more hourly sign-outs" (11).
+- "longer OTM retry backoff and read timeout with per-attempt duration logs, so remaining inbound shipment sync failures are diagnosable" (19) became "OTM retry backoff and per-attempt timing logs" (7). The so-clause restated what logs are for, so it went.
+- "Worked with Bryan, Andrew, and Milan on outbound: picking is a move to the load's staging location; invariants enforced at load" (21) lost its second design point (14).
+
+An earlier draft of the auth work read: "The shared 'any 2 factor types' Okta policy let a Verify push satisfy both factor slots and skip the password; forced `prompt=login` on that redirect to require it." Accurate, interesting to an engineer, and the author cut it. The failure mechanics live in the PR; the post carries the capability.
+
+Advisory, collaboration, and onboarding bullets stay short: who + the one decision or outcome, ≤14 words before links. Do not reproduce the design you discussed, and cut scene-setting adjectives ("long-term," "end-to-end," "permanent") unless the adjective is the decision. "Worked with Tyler and Enrique to scope NuGet CodeArtifact distribution for rw-twincat-core" is the whole bullet; the API shapes and class names that came up in the thread do not belong in the report.
 
 **When a bullet does earn a second sentence**, spend it on the single detail that changes what the reader knows: the shape of a migration, who a capability unblocks, an incident the audience already heard about. Not construction details (`PKCE`, `localStorage`, `RequireAuth`, exact flag expressions, which files moved), and not failure archaeology for a bug the audience never saw — name what raced or broke at the domain level ("a race condition between an admin draft-lot publish and the redirect to the public lot page"), not the env vars and variable names involved. Ask of each clause: does the reader act differently knowing it? If not, cut it.
 
@@ -149,6 +158,10 @@ De-fluffed (say the fact): "Shipped: Updated classifier to use the TensorRT exec
 
 Do not narrate discovery ("on-device testing surfaced that," "it turned out," "we found that," "digging in revealed") — delete the lead-in and start at the fact.
 
+## Step 5b: Word-count pass
+
+Before formatting links, count the words in every bullet (excluding the label and links) and in the headline. Any bullet over 12 words or headline over 18 gets cut to fit, in this order: drop quoted UI labels and surface lists ("in scanner and web"), drop the "so" clause if the noun phrase implies it, drop the second sub-item of a cluster, drop adjectives. If the bullet still does not fit, the item is too small to report; cut the whole bullet. Do not skip this pass. Drafts that skip it come out at double the target length and the author trims them by hand.
+
 ## Step 6: Links
 
 Use standard markdown link syntax:
@@ -164,7 +177,7 @@ Multiple links on one line are fine: `... [repo#1](url1), [repo#2](url2)`.
 ```
 Week ending {FRIDAY_DATE}
 
-*This week:* <one or two sentences, often a fragment, stating the week's top outcome or current state across projects>.
+*This week:* <one sentence or fragment, ≤18 words, stating the week's top outcome or current state across projects>.
 
 *{Project Name}*
 - Shipped: <outcome and why> <link>
@@ -188,10 +201,11 @@ Omit empty sections. If the week was quiet, write one honest sentence under "Thi
 - Output ONLY the report text, nothing else
 - Bullets use `-` (markdown list syntax), never `•` or other Unicode bullet characters — the report gets copy-pasted as markdown
 - Markdown link syntax `[text](url)`, never Slack's `<url|text>` syntax
-- Cut filler, not substance. Every clause carries a number, consequence, or name. Cluster related PRs. Drop trivia. Every bullet is one sentence by default; at most one or two second sentences across the whole report (Step 5).
-- Target 6–9 bullets total, 2–4 per section. If the draft runs longer, cut whole bullets (weakest first), not just their detail.
+- Cut filler, not substance. Every clause carries a number, consequence, or name. Cluster related PRs. Drop trivia. Every bullet is one line; at most one second sentence in the whole report (Step 5).
+- Target 6–8 bullets total, 2–4 per section. If the draft runs longer, cut whole bullets (weakest first), not just their detail.
+- Hard caps: 12 words per bullet before links, 6 of them in the "so" clause, 18 words in the headline. Run the Step 5b word-count pass before output.
 - Every item pairs what changed with the consequence that makes it matter, folded into the same bullet (usually a "so" clause). If you can't state the consequence, cut the item. No separate "Why it matters" line.
-- Headline: one or two sentences, often a fragment. If the user named a focus in Step 0, lead with it. Openers Ben uses: "Focus was X.", "Focused on X.", "Progress on X.", or a plain statement of current state ("Badge-tap scanner sign-in now works end-to-end on the handheld."). State the outcome, not a list of activities.
+- Headline: one sentence or fragment, ≤18 words. A colon-list of the 2–3 focus outcomes beats prose ("Focus was X: A, B, and C."). If the user named a focus in Step 0, lead with it. Openers Ben uses: "Focus was X.", "Focused on X.", "Progress on X.", or a plain statement of current state ("Badge-tap scanner sign-in now works end-to-end on the handheld."). State the outcome, not a list of activities.
 - Use precise domain language — name the product behavior, decision, or migration shape. Code-level mechanism (flags, env vars, policy names, library commands) belongs in the PR, not the post (Step 5).
 - Voice per `~/.claude/docs/writing.md` (the AI-tells section applies in full: filler kill-list, no meta-commentary grading the work, no discovery narration). Additionally for this channel: no manager/corporate idioms ("heads-down," "drove the call," "punt," "circle back"), and no verification narration ("Verified via QA," "reviewed with X," lint/test claims); the post asserts outcomes.
 - No emdashes at all (stricter than writing.md's rare allowance). Use periods, commas, semicolons, or parentheses.
