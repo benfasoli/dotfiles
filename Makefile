@@ -30,8 +30,9 @@ claude:
 	ln -sfn $(DOTFILES)/home/.claude/hooks/block-out-of-project-edits.py $(HOME)/.claude/hooks/block-out-of-project-edits.py
 
 copilot:
-	mkdir -p $(HOME)/.copilot
+	mkdir -p $(HOME)/.copilot/skills
 	ln -sfn $(DOTFILES)/home/.copilot/copilot-instructions.md $(HOME)/.copilot/copilot-instructions.md
+	ln -sfn $(DOTFILES)/home/.copilot/skills/simplification-review $(HOME)/.copilot/skills/simplification-review
 
 k9s:
 	mkdir -p "$(HOME)/Library/Application Support/k9s"
