@@ -1,9 +1,9 @@
 ---
-name: simplification-review
+name: simplify
 description: Review the current branch, pull request, or diff for concrete ways to simplify changed code and for broader simplifications newly enabled by the change.
 ---
 
-# Simplification review
+# Simplify
 
 Review the current branch, pull request, or diff for opportunities to make the code smaller,
 clearer, and easier to maintain without changing intended behavior. Review only: do not edit,
