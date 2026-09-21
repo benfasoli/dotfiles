@@ -60,21 +60,26 @@ Do not recommend:
 
 ## Report findings
 
-Order findings by scope, then by payoff and confidence. For each finding include:
+Report at most the three highest-value findings. Omit low-confidence suggestions rather than
+adding review burden. Group findings under `Current change` and `Follow-up`, with current-change
+decisions first. Keep follow-up findings especially brief.
 
-- **Location:** File and precise line or line range.
-- **Recommendation:** The exact code, branch, state, interface, or abstraction to remove, narrow,
-  or replace, including the established project pattern to use when applicable.
-- **Safety / verification:** Why behavior should remain unchanged and the focused checks needed to
-  prove it.
-- **Payoff:** What becomes smaller or easier to reason about; quantify deleted paths, state, or
-  surface area when practical.
-- **Scope:** `Current change` or `Follow-up`.
-- **Confidence:** `High`, `Medium`, or `Low`, with the key evidence or uncertainty.
+Use this compact format for each finding:
 
-Keep findings concrete and independently actionable. Avoid a general summary disguised as a
-finding. If there are no worthwhile simplifications, say explicitly:
+### [Action-oriented recommendation] — `path/to/file:line`
+**Decision:** The exact code, branch, state, interface, or abstraction to remove, narrow, or
+replace. Mention an established project pattern only when it materially supports the decision.
+**Value:** The concrete maintenance payoff. Quantify deleted paths, state, or surface area only
+when it is natural and useful.
+**Risk:** `Low`, `Medium`, or `High` — one concise reason behavior should remain unchanged and the
+key uncertainty, if any. Mention a focused verification step only when the decision depends on it.
+
+Keep findings concrete and independently actionable. Do not include repository-tour evidence,
+routine verification instructions, or a general summary disguised as a finding. If there are no
+worthwhile simplifications, say explicitly:
 
 > No worthwhile simplification findings.
 
-Do not manufacture low-confidence suggestions to fill the report.
+When findings are reported, end with:
+
+> No other worthwhile simplifications.
