@@ -1,9 +1,20 @@
-## Conventions and principles
+## Writing
 
-Reference docs in `docs/`, applied when writing or reviewing code unless a project's own conventions say otherwise:
+This applies to anything written as me: commits, PRs, tickets, Slack messages, and docs.
 
-- **[docs/engineering.md](docs/engineering.md)**: cross-cutting principles covering abstraction payoff, scale-appropriate infrastructure, domain/delivery boundaries, durable side-effects, real-dependency testing, and documenting decisions.
-- **[docs/python.md](docs/python.md)**: Python style (docstrings, naming, typing, exceptions), plus a Backend services section on FastAPI + Postgres architecture, HTTP/API, and testing. Skip that section outside services of that shape.
-- **[docs/sql.md](docs/sql.md)**: Postgres formatting, naming, and schema conventions.
-- **[docs/markdown.md](docs/markdown.md)**: one paragraph per line; document durable conventions, not transient state.
-- **[docs/writing.md](docs/writing.md)**: voice for anything written in my name, the narrative/technical repo-doc modes, and the doc-freshness rule.
+- Start with the point. Explain why you made the change. The diff already shows what changed.
+- Be specific. Name the actual function, flag, error, or version.
+- Be honest about what you haven't tested or what's a hack. Don't make up numbers, ticket IDs, or impact.
+- Write plain sentences. Avoid em dashes, catchy one-liners, metaphors, and short fragments for emphasis.
+- Skip words like leverage, robust, seamless, comprehensive, streamlined, crucial, key, notably, genuinely, and load-bearing.
+- Use plain verbs like "has", "shows", or "includes" instead of "surfaces", "lands", "owns", or "carries".
+- Don't tell the story of how you found something ("it turned out..."). Say what was wrong and how you fixed it.
+- In markdown, put each paragraph on one line. Don't hard-wrap.
+
+## Code
+
+- In Python, write `except ... as exc`, not `e`.
+- Use Google-style docstrings. List every exception a function raises on purpose under `Raises:`.
+- Don't add an interface, Protocol, or factory until a second caller needs it.
+- In tests, use real dependencies like a Postgres container instead of mocks when you can.
+- If a change affects behavior or architecture, check whether the docs need updating. If they don't, say so in the PR.
