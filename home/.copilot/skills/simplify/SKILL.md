@@ -33,8 +33,10 @@ Look first for:
 
 Favor the smallest behavior-preserving change with a clear maintenance payoff. A simplification
 should reduce concepts, paths, state, or surface area—not merely move complexity elsewhere.
+An obsolete wrapper or interface created by the current diff can be worth deleting even if the
+change is small: judge the concept removed and the risk, not just the number of lines saved.
 
-## Scope findings explicitly
+## Scope findings
 
 Classify every finding as one of:
 
@@ -43,38 +45,49 @@ Classify every finding as one of:
 - **Follow-up:** The current change enables or reveals a worthwhile simplification elsewhere, but
   implementing it would broaden the change's review or risk surface.
 
-Do not blur the two categories. A follow-up must have a direct causal or structural connection to
-the current change; unrelated pre-existing cleanup is not a finding.
+Label each finding with its scope. A follow-up must have a direct causal or structural connection
+to the current change; unrelated pre-existing cleanup is not a finding.
 
 ## Reject low-value churn
+
+Before reporting a finding, sketch the smallest complete change across callers, construction
+sites, tests, and documentation. Count any new wrappers, closures, captured state, imports, or
+wiring against what would be removed. A shorter signature is not a payoff if the same dependency
+still exists in another form. Recommend the change only when it eliminates a responsibility or
+meaningfully reduces the total concepts a maintainer must understand.
 
 Do not recommend:
 
 - speculative abstractions for hypothetical reuse
 - style-only rewrites, renames, formatting churn, or preference-driven reshaping
+- replacing an explicit context field with closure or `partial` state solely to shorten an
+  interface when the value and its construction wiring remain necessary
 - broad architectural rewrites when a local deletion or narrowing is sufficient
 - unrelated cleanup, even when encountered during review
-- deduplication that obscures intent or couples code that changes for different reasons
+- deduplication that obscures intent, couples independent behavior, or requires more coordination
+  than the duplication it removes; prefer a little local duplication to the wrong abstraction
+- combining independently useful loading boundaries just to reduce hook calls when shared
+  caching already avoids duplicate requests
 - removal of defensive behavior without evidence that its protected state is impossible
 - changes whose implementation cost or risk outweighs the maintenance payoff
 
 ## Report findings
 
-Order findings by scope, then by payoff and confidence. For each finding include:
+Report every obvious, high-confidence simplification that is worth its cost, with no fixed number
+of findings. Stop when the next idea is marginal; do not pad the list. Put current-change findings
+first and keep follow-ups brief. Do not recommend a change you judge not worth doing.
 
-- **Location:** File and precise line or line range.
-- **Recommendation:** The exact code, branch, state, interface, or abstraction to remove, narrow,
-  or replace, including the established project pattern to use when applicable.
-- **Safety / verification:** Why behavior should remain unchanged and the focused checks needed to
-  prove it.
-- **Payoff:** What becomes smaller or easier to reason about; quantify deleted paths, state, or
-  surface area when practical.
-- **Scope:** `Current change` or `Follow-up`.
-- **Confidence:** `High`, `Medium`, or `Low`, with the key evidence or uncertainty.
+Use one short bullet per finding:
 
-Keep findings concrete and independently actionable. Avoid a general summary disguised as a
-finding. If there are no worthwhile simplifications, say explicitly:
+- **Current change** `path/to/file:line`: Before: [what exists]. After: [specific deletion or
+  narrowing]. Value: [concrete maintenance payoff]. Risk: [practical behavior or scope cost].
+  Verdict: [why it is worth doing in this branch].
+- **Follow-up** `path/to/file:line`: Before: [what exists]. After: [specific change]. Value:
+  [concrete payoff]. Risk: [practical behavior or scope cost]. Verdict: [why a separate change is
+  worth doing].
 
-> No worthwhile simplification findings.
+Write each finding as concisely as the evidence allows. Explain the before and after so the reader
+can understand the change without opening the file. Include a risk even when it is low, but avoid
+routine verification instructions and repository-tour context. If nothing clears the bar, say:
 
-Do not manufacture low-confidence suggestions to fill the report.
+> No worthwhile simplifications.
