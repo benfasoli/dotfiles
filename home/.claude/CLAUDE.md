@@ -8,6 +8,7 @@ This applies to anything written as me: commits, PRs, tickets, Slack messages, a
 - Write plain sentences. Avoid em dashes, catchy one-liners, metaphors, and short fragments for emphasis.
 - Skip words like leverage, robust, seamless, comprehensive, streamlined, crucial, key, notably, genuinely, and load-bearing.
 - Use plain verbs like "has", "shows", or "includes" instead of "surfaces", "lands", "owns", or "carries".
+- Use one term for each concept. Define it once and stick with it.
 - Don't tell the story of how you found something ("it turned out..."). Say what was wrong and how you fixed it.
 - In markdown, put each paragraph on one line. Don't hard-wrap.
 

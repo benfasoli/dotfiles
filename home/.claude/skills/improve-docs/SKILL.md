@@ -10,8 +10,24 @@ description: Reader-first standard for improving a project's documentation with 
 The goal is better docs, not more docs. A pass succeeds when a reader gets what they need
 faster — often by cutting, consolidating, reordering, or rewriting rather than adding. Adding
 nothing is a valid outcome, and cutting stale or low-value docs is good — but don't equate fewer
-docs with better ones. Prose style for the docs themselves follows `~/.claude/docs/writing.md`
-(voice, and the narrative/technical mode split).
+docs with better ones. Prose follows the writing rules in `~/.claude/CLAUDE.md`, in one of the
+two modes below.
+
+## Prose modes
+Pick the mode by what the document is. If it fits neither list, use technical. A README usually
+opens in narrative mode and switches to technical at the first usage section.
+- **Technical** (API and reference docs, rules, compatibility tables, implementation notes,
+  docstrings, error messages, code comments): one idea per sentence, present tense. Describe
+  behavior first, then constraints, then error cases. Every claim should be checkable against the
+  code. No adjectives the reader can't verify (simple, powerful, flexible), no metaphors, no humor.
+  A short example beats a paragraph.
+  > GOSUB pushes the next statement position onto the call stack. RETURN resumes from that
+  > position. Returning with an empty stack is an error.
+- **Narrative** (README intros and overviews, the context section of a design note,
+  retrospectives): paragraphs, not bullets. Short, plain sentences. Prefer a comparison the reader
+  can check over an abstract adjective: "small enough to hold in your head" beats "simple and
+  approachable". Every sentence should still tell the reader a fact. Humor is fine when it's an
+  accurate observation about the subject, at most once per section. End a section on its point.
 
 ## Write for the reader (the test everything else serves)
 Every rule below answers one question: what does *this reader* need next, and at what level? When
@@ -80,6 +96,8 @@ The stable contract is where a pass tends to pay off most:
 - docs/ topic files: touch only where code clearly supports the claim and the topic is durable
   enough to maintain. architecture = components and boundaries; api = contracts/errors;
   persistence = schema/ownership/transactions. No speculative future-state.
+- Decision docs: state the context, the decision, why, and the options you rejected and why. The
+  why tells a later reader when the rule stops applying.
 - CLAUDE.md: small and high-signal — durable invariants, key decisions, gotchas. Prune anything
   the current code contradicts; don't restate README/docs; ~150-line budget.
 

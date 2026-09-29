@@ -51,7 +51,7 @@ Re-run a single tool's links after editing:
 make zsh
 make git
 make vim
-make claude   # links CLAUDE.md, settings.json, docs/, and bundled skills
+make claude   # links CLAUDE.md, settings.json, hooks, and bundled skills
 make copilot  # links personal Copilot instructions and bundled skills
 make k9s      # links K9s configuration
 ```
