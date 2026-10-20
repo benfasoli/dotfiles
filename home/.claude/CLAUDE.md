@@ -2,6 +2,7 @@
 
 This applies to anything written as me: commits, PRs, tickets, Slack messages, and docs.
 
+- Use ISO plain language.
 - Start with the point. Explain why you made the change. The diff already shows what changed.
 - Be specific. Name the actual function, flag, error, or version.
 - Be honest about what you haven't tested or what's a hack. Don't make up numbers, ticket IDs, or impact.

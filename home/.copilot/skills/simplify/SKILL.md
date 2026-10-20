@@ -77,17 +77,25 @@ Report every obvious, high-confidence simplification that is worth its cost, wit
 of findings. Stop when the next idea is marginal; do not pad the list. Put current-change findings
 first and keep follow-ups brief. Do not recommend a change you judge not worth doing.
 
-Use one short bullet per finding:
+Give each finding a short descriptive heading, followed by its scope and source location.
+Use separate labeled bullets for the details, with this structure:
 
-- **Current change** `path/to/file:line`: Before: [what exists]. After: [specific deletion or
-  narrowing]. Value: [concrete maintenance payoff]. Risk: [practical behavior or scope cost].
-  Verdict: [why it is worth doing in this branch].
-- **Follow-up** `path/to/file:line`: Before: [what exists]. After: [specific change]. Value:
-  [concrete payoff]. Risk: [practical behavior or scope cost]. Verdict: [why a separate change is
-  worth doing].
+### [Short title naming the simplification]
 
-Write each finding as concisely as the evidence allows. Explain the before and after so the reader
-can understand the change without opening the file. Include a risk even when it is low, but avoid
-routine verification instructions and repository-tour context. If nothing clears the bar, say:
+**Scope:** Current change or Follow-up  
+**Location:** `path/to/file:line`
+
+- **Before:** [What exists.]
+- **After:** [Specific deletion or narrowing.]
+- **Value:** [Concrete maintenance payoff.]
+- **Risk:** [Practical behavior or scope cost, even when low.]
+- **Recommendation:** [Why it is worth doing in this branch or as a separate change.]
+
+Do not bundle these fields into a single paragraph or a single long bullet. Keep each field short
+and use whitespace between findings so the report is easy to scan. Keep follow-ups compact, but
+preserve the same visual structure.
+
+Explain the before and after so the reader can understand the change without opening the file.
+Avoid routine verification instructions and repository-tour context. If nothing clears the bar, say:
 
 > No worthwhile simplifications.
