@@ -14,7 +14,7 @@ Do not rebase, force-push, delete the branch, enable auto-merge, or bypass branc
 
 ## Establish the deadline
 
-At the start, record the current UTC time and a hard deadline exactly two hours later. The
+At the start, record the current UTC time and a hard deadline exactly eight hours later. The
 deadline is wall-clock time, not accumulated wait time. Before every wait, retry, remote update,
 local update, push, or merge attempt, compare the current time with the deadline. If the deadline
 has been reached, stop without starting that operation and report the timeout outcome.
@@ -159,7 +159,7 @@ remote branch.
 Keep the final report concise and use the applicable outcome:
 
 - **Success:** PR number, confirmed squash merge commit, and any retried flakes with their evidence.
-- **Timeout:** the state being attempted when the original two-hour deadline expired.
+- **Timeout:** the state being attempted when the original eight-hour deadline expired.
 - **Dismissed approval:** the push after which approval disappeared and that reapproval is required.
 - **Ambiguous conflict:** conflicted paths and the behavior or intent decision the user must make.
 - **Retried flake:** check identity, concrete flake evidence, and retry result; include this within
