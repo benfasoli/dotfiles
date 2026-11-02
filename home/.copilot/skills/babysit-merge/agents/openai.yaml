@@ -1,3 +1,3 @@
 interface:
   display_name: "Babysit merge"
-  short_description: "Safely babysit an approved PR through squash merge"
+  short_description: "Merge only human-approved PRs with no open concerns"
