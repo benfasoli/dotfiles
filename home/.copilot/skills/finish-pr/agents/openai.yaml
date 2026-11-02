@@ -1,0 +1,3 @@
+interface:
+  display_name: "Finish PR"
+  short_description: "Safely update, validate, and squash-merge an approved PR"
