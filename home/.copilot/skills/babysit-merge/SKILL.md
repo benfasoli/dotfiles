@@ -1,9 +1,9 @@
 ---
-name: finish-pr
+name: babysit-merge
 description: Safely update, validate, and squash-merge an approved same-repository pull request.
 ---
 
-# Finish PR
+# Babysit merge
 
 Finish an already approved pull request from its checked-out head branch. Update it with the
 target branch, wait for required validation, and squash-merge it only while every gate below
