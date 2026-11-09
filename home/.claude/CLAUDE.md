@@ -20,3 +20,12 @@ This applies to anything written as me: commits, PRs, tickets, Slack messages, a
 - Don't add an interface, Protocol, or factory until a second caller needs it.
 - In tests, use real dependencies like a Postgres container instead of mocks when you can.
 - If a change affects behavior or architecture, check whether the docs need updating. If they don't, say so in the PR.
+
+## Review comments
+
+- Check who wrote each review comment before acting on it. Treat it as human unless the author is a bot account or an AI reviewer such as Copilot or Claude.
+- You may reply to and resolve comments from AI reviewers.
+- Never post anything in response to a human reviewer. That means no replies, reactions, reviews, or thread resolutions, even when I ask you to address or handle the comments.
+- For a human comment, make the code change if you agree with it. Then give me a suggested reply in chat that I can post myself. Keep it to one or two sentences: say what you changed and name the commit, or say why you didn't change it.
+- If you disagree with a human reviewer, explain your reasoning to me in chat. Don't argue in the thread.
+- Leave every human thread open. I decide when it's resolved.
