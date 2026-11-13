@@ -1,5 +1,14 @@
 DOTFILES := $(HOME)/repos/dotfiles
 
+# Every folder in skills/ is linked into both ~/.claude/skills and ~/.copilot/skills.
+SKILLS := $(notdir $(wildcard $(DOTFILES)/skills/*))
+
+# Usage: $(call link-skills,<destination skills folder>)
+define link-skills
+	mkdir -p $(1)
+	for skill in $(SKILLS); do ln -sfn $(DOTFILES)/skills/$$skill $(1)/$$skill; done
+endef
+
 .PHONY: install zsh git vim claude copilot k9s brew
 
 install: zsh git vim claude copilot k9s
@@ -17,19 +26,17 @@ vim:
 	ln -sfn $(DOTFILES)/home/.vimrc $(HOME)/.vimrc
 
 claude:
-	mkdir -p $(HOME)/.claude/skills $(HOME)/.claude/hooks
+	mkdir -p $(HOME)/.claude/hooks
 	ln -sfn $(DOTFILES)/home/.claude/CLAUDE.md     $(HOME)/.claude/CLAUDE.md
 	ln -sfn $(DOTFILES)/home/.claude/settings.json $(HOME)/.claude/settings.json
-	ln -sfn $(DOTFILES)/home/.claude/skills/improve-docs   $(HOME)/.claude/skills/improve-docs
-	ln -sfn $(DOTFILES)/home/.claude/skills/weekly-status  $(HOME)/.claude/skills/weekly-status
 	ln -sfn $(DOTFILES)/home/.claude/hooks/block-out-of-project-edits.py $(HOME)/.claude/hooks/block-out-of-project-edits.py
+	$(call link-skills,$(HOME)/.claude/skills)
 
 copilot:
-	mkdir -p $(HOME)/.copilot/skills
+	mkdir -p $(HOME)/.copilot
 	ln -sfn $(DOTFILES)/home/.copilot/copilot-instructions.md $(HOME)/.copilot/copilot-instructions.md
-	ln -sfn $(DOTFILES)/home/.copilot/skills/simplify $(HOME)/.copilot/skills/simplify
 	[ ! -L $(HOME)/.copilot/skills/finish-pr ] || rm $(HOME)/.copilot/skills/finish-pr
-	ln -sfn $(DOTFILES)/home/.copilot/skills/babysit-merge $(HOME)/.copilot/skills/babysit-merge
+	$(call link-skills,$(HOME)/.copilot/skills)
 
 k9s:
 	mkdir -p "$(HOME)/Library/Application Support/k9s"
