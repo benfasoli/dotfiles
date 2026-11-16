@@ -74,7 +74,7 @@ Keep:
 - Decisions made, even if they live only in Slack
 - Incidents led or co-led
 - Cross-team unblocks
-- Risks or asks where leadership can help
+- Asks where leadership can help
 
 When picking Slack-sourced items:
 - Do not label exploratory discussion as a "decision." Only call something Shipped if there is a concrete, durable outcome the audience could point to next week. A back-and-forth weighing tradeoffs is not a decision.
@@ -88,17 +88,19 @@ Slack-sourced items should land in the project section they actually belong to. 
 
 A workstream with a single item still gets its own named section. Do NOT merge a lone workstream item into `*Other*` to avoid a thin section — one-item sections are normal and common in the real posts (e.g. a standalone "CodeArtifact proxy" or "batsort" section with one bullet). Concretely: "Advised Nadia on rw-batsort's Redis queue design" belongs under a *Battery sorting* section, not *Other*, even if it is the only battery-sorting item that week. Mentoring, code review, and observability work on a named workstream is real reportable work under that workstream, not advisory noise to drop. But one collaboration bullet per section is usually plenty — keep the most substantive (a design worked through together, framed by its purpose), and drop pointer-giving, access grants, and orientation help.
 
-Within each project, order by status: **Shipped**, then **In progress**, then **Blocked**, then **Risk**.
+Within each project, order by status: **Shipped**, then **In progress**, then **Blocked**.
 
 `In progress` bullets are rare. If in-flight work is part of the week's focus, state it in the headline ("API client generation is in progress") and cut the bullet; bullet an in-progress item only if leadership would ask about it by name. Internal plumbing (build caching, error-envelope standardization, deploy retargeting) doesn't earn a bullet even when merged, unless it unblocks something the audience tracks.
 
 Order projects by activity (most items first). Omit projects with no meaningful updates.
 
-Blockers and risks live inside the relevant project section, not at the top of the report. Use `Blocked:` for work that is currently stuck on a dependency, and `Risk:` for situations that could break the project even if no work is actively stuck (e.g. fragile hardware, single-points-of-failure, external dependencies, or staffing/ownership gaps such as a departure leaving a system thinly covered or one person on the critical path). Each blocker or risk should name what would resolve it.
+Blockers live inside the relevant project section, not at the top of the report. Use `Blocked:` only for work that is currently stuck on a dependency, and name what would unblock it.
 
-When naming a blocker or risk, state the underlying cause, not the surface symptom you noticed first. For a technical risk, name the actual technical cause (e.g. "git for windows submodule regression," not "CI failing"). For a staffing/ownership risk, name the coverage gap and who could resolve it (e.g. "camera-systems coverage thin after Sylvain's departure; asked Enrique and Tyler to consider PLC/HMI ownership"). If you are not sure of the underlying cause, ask the user before publishing.
+Do not report risks. No `Risk:` bullets, and no items about what could go wrong: fragile hardware, pending validation, undecided interfaces, staffing gaps, review backlogs. Keep them out of the headline too. If the user wants a risk in the post, they add it by hand.
 
-The Shipped/In progress/Blocked/Risk taxonomy is the default for per-project work where status is meaningful. But plain-verb, label-less bullets are also fine inside a project section for handoffs, collaboration, and advisory work that doesn't fit a status label: `Handed off GPU PCI device automation to Conner.`, `Worked with Cayler + Nadia to remediate the frame-buffer off-by-one.`, `Asked Enrique and Tyler to consider PLC/HMI ownership.` A single straightforward fix may use a plain past-tense verb (`Fixed a 422 error blocking admin lot edits`, `Added ...`) in place of `Shipped:`.
+When naming a blocker, state the underlying cause, not the surface symptom you noticed first (e.g. "git for windows submodule regression," not "CI failing"). If you are not sure of the underlying cause, ask the user before publishing.
+
+The Shipped/In progress/Blocked taxonomy is the default for per-project work where status is meaningful. But plain-verb, label-less bullets are also fine inside a project section for handoffs, collaboration, and advisory work that doesn't fit a status label: `Handed off GPU PCI device automation to Conner.`, `Worked with Cayler + Nadia to remediate the frame-buffer off-by-one.`, `Asked Enrique and Tyler to consider PLC/HMI ownership.` A single straightforward fix may use a plain past-tense verb (`Fixed a 422 error blocking admin lot edits`, `Added ...`) in place of `Shipped:`.
 
 `*Other*` items do not use status prefixes either; begin those lines with a plain verb: `Investigated`, `Worked with`, `Reviewed`, `Coordinated`. But note: collaboration, mentoring, and advisory work are NOT `*Other*` by default. A plain-verb bullet ("Worked with Nadia on ...") belongs inside the workstream it is about — put "Worked with Nadia on rw-batsort's Redis consumer" under *Battery sorting*. Only work with no home workstream at all (a security sweep across many repos, org-wide tooling, a company metric) lands in `*Other*`. Most weeks `*Other*` is empty — onboarding, access grants, and tooling chatter don't clear the bar.
 
@@ -106,39 +108,39 @@ The Shipped/In progress/Blocked/Risk taxonomy is the default for per-project wor
 
 Every item is one line:
 
-> `Shipped:` / `In progress:` / `Blocked:` / `Risk:` `<what changed, and the consequence that makes it matter>` `<link>`
+> `Shipped:` / `In progress:` / `Blocked:` `<what changed>` `<link>`
 
-Lead with the label, then say what changed in concrete terms, then fold in the consequence. State the consequence as a technical fact, usually with "so" — never as an editorial "why it matters." That "so" clause is the heart of the report:
+Lead with the label, then say what changed as a short noun phrase that implies its consequence. Most bullets stop there. Add a "so" clause only when the reader could not infer why the item matters, state it as a technical fact, and keep it to 4 words:
 
-- "per-camera trigger diagnostic counters on PLC1 and PLC2, so silent trigger drops are now observable in Ignition."
-- "the 1g.24gb profile so each card serves four isolated 24GB workloads."
-- "an ID-badge NFC tap for identity and an Okta push for trust, so floor operators never type passwords."
-- "GPU PCI passthrough auto-provisioning (with Conner) so GPU VMs always start on a host with a free device, replacing per-upgrade vSphere click-ops."
+- "per-camera trigger counters, so silent drops are observable."
+- "1g.24gb GPU profile: four isolated workloads per card."
+- "badge-tap sign-in with Okta push, so operators skip passwords."
+- "GPU passthrough auto-provisioning (with Conner)."
 
 Credit collaborators inline, first names only: `(with Conner)`, `Worked with Micah + Ian`, `confirmed expected behavior with Ankit`. Full names read as formal in a Slack post where everyone shares the workspace. Collaborator names often live in thread replies rather than authored messages — read the thread before writing a collaboration bullet. Cluster related PRs into one bullet.
 
-**Every bullet is one line, and short. This is where drafts go wrong.** Hard caps, counted before the links: 12 words per bullet, of which the "so" clause is at most 6. Label, tight noun phrase for what changed, optional "so" clause, links. Fragments beat sentences. Drop the "so" clause when the noun phrase already implies the consequence ("OTM retry backoff and per-attempt timing logs" needs none). When clustering PRs, name at most two sub-items as bare noun phrases; the links carry the rest. A second sentence appears at most once per report, for the single biggest item. A real section at target length:
+**Every bullet is one line, and short. This is where drafts go wrong.** Hard caps, counted before the links and excluding the label and `(with X)` credits: 8 words per bullet, of which a "so" clause is at most 4. Label, tight noun phrase for what changed, links. Fragments beat sentences. Drop the "so" clause when the noun phrase already implies the consequence ("OTM retry backoff and timing logs" needs none), which is most of the time. When clustering PRs, name at most two sub-items as bare noun phrases; the links carry the rest. A second sentence appears at most once per report, for the single biggest item. A real section at target length:
 
 ```
 *Redwood OS*
-- Shipped: receiving part suggestions tiered by BOL and supplier contract, so operators skip the full catalog. [rad-rwos#828](url)
-- Shipped: supplier name and code from OTM shipments (with Micah + Milan), so receiving knows which supplier sent the shipment. [rad-rwos#817](url)
-- Shipped: sign-in survives reloads and scanner restarts, so no more hourly sign-outs. [rad-rwos#795](url)
-- Shipped: OTM retry backoff and per-attempt timing logs. [rad-rwos#812](url), [rad-rwos#826](url)
-- Worked with Bryan, Andrew, and Milan on outbound: picking is a move to the load's staging location. [thread](url)
-- Risk: D365 PO creation fails without part numbers; receipts cannot sync until a parts sync lands.
+- Shipped: receiving part suggestions tiered by BOL and contract. [rad-rwos#828](url)
+- Shipped: supplier name and code on OTM shipments (with Micah + Milan). [rad-rwos#817](url)
+- Shipped: sign-in survives reloads and scanner restarts. [rad-rwos#795](url)
+- Shipped: OTM retry backoff and timing logs. [rad-rwos#812](url), [rad-rwos#826](url)
+- Scoped outbound picking (with Bryan, Andrew + Milan): a move to load staging. [thread](url)
 ```
 
-The first draft of that section ran twice as long, and the author asked for half. The trims that got there:
+The first draft of that section ran three times as long. The author asked for half, then asked for shorter again. The trims that got there:
 
-- "receiving part suggestions grouped into "on this BOL" and "supplier contracts" tiers in scanner and web, so operators pick from a short relevant list instead of the full catalog" (28 words) became "receiving part suggestions tiered by BOL and supplier contract, so operators skip the full catalog" (14). Quoted UI labels, surface list, and the restated benefit all went.
-- "sign-in now survives reloads and scanner background restarts, so users are no longer signed out an hour after last renewal" (20) became "sign-in survives reloads and scanner restarts, so no more hourly sign-outs" (11).
-- "longer OTM retry backoff and read timeout with per-attempt duration logs, so remaining inbound shipment sync failures are diagnosable" (19) became "OTM retry backoff and per-attempt timing logs" (7). The so-clause restated what logs are for, so it went.
-- "Worked with Bryan, Andrew, and Milan on outbound: picking is a move to the load's staging location; invariants enforced at load" (21) lost its second design point (14).
+- "receiving part suggestions grouped into "on this BOL" and "supplier contracts" tiers in scanner and web, so operators pick from a short relevant list instead of the full catalog" (28 words) became "receiving part suggestions tiered by BOL and contract" (8). Quoted UI labels, surface list, and the benefit all went.
+- "sign-in now survives reloads and scanner background restarts, so users are no longer signed out an hour after last renewal" (20) became "sign-in survives reloads and scanner restarts" (6).
+- "longer OTM retry backoff and read timeout with per-attempt duration logs, so remaining inbound shipment sync failures are diagnosable" (19) became "OTM retry backoff and timing logs" (6). The so-clause restated what logs are for, so it went.
+- "Worked with Bryan, Andrew, and Milan on outbound: picking is a move to the load's staging location; invariants enforced at load" (21) became "Scoped outbound picking (with Bryan, Andrew + Milan): a move to load staging" (7 before credits).
+- "removed cycle count lost/recovered postings, so D365 keeps accounting for lost inventory" (12) became "removed D365 postings for lost and recovered containers" (8).
 
 An earlier draft of the auth work read: "The shared 'any 2 factor types' Okta policy let a Verify push satisfy both factor slots and skip the password; forced `prompt=login` on that redirect to require it." Accurate, interesting to an engineer, and the author cut it. The failure mechanics live in the PR; the post carries the capability.
 
-Advisory, collaboration, and onboarding bullets stay short: who + the one decision or outcome, ≤14 words before links. Do not reproduce the design you discussed, and cut scene-setting adjectives ("long-term," "end-to-end," "permanent") unless the adjective is the decision. "Worked with Tyler and Enrique to scope NuGet CodeArtifact distribution for rw-twincat-core" is the whole bullet; the API shapes and class names that came up in the thread do not belong in the report.
+Advisory, collaboration, and onboarding bullets stay short: who + the one decision or outcome, ≤10 words before links. Do not reproduce the design you discussed, and cut scene-setting adjectives ("long-term," "end-to-end," "permanent") unless the adjective is the decision. "Worked with Tyler and Enrique to scope NuGet distribution via CodeArtifact" is the whole bullet; the API shapes and class names that came up in the thread do not belong in the report.
 
 **When a bullet does earn a second sentence**, spend it on the single detail that changes what the reader knows: the shape of a migration, who a capability unblocks, an incident the audience already heard about. Not construction details (`PKCE`, `localStorage`, `RequireAuth`, exact flag expressions, which files moved), and not failure archaeology for a bug the audience never saw — name what raced or broke at the domain level ("a race condition between an admin draft-lot publish and the redirect to the public lot page"), not the env vars and variable names involved. Ask of each clause: does the reader act differently knowing it? If not, cut it.
 
@@ -150,7 +152,9 @@ Generated vs authored — the trims a real edit made:
 - Generated: "Fixed a draft-lot not-found crash on publish/delete by reordering cache refreshes so the edit form stops reading the draft cache before it clears." Authored: "Shipped: fixed a race condition between an admin draft-lot publish and the redirect to the public lot page." Same fix, described by what raced in the product instead of cache mechanics.
 - Generated: "Verified via the QA environment; reviewed with Bryan Vicknair." Authored: deleted. The post asserts outcomes; verification narration and reviewer credits live in the PR.
 
-Too thin (no consequence): "Shipped: Added retry logic to webhook delivery [repo#1](url)"
+The authored lines above show the level of description, not the length. Trim them to the 8-word cap.
+
+Too thin (code-level, no product behavior): "Shipped: Added retry logic to webhook delivery [repo#1](url)"
 
 Fluffed (LLM padding — cut it): "Shipped: Successfully re-enabled the TensorRT execution provider on the classifier, leveraging pinned input shapes to enable robust, low-latency inference that significantly improves throughput under production load."
 
@@ -160,7 +164,7 @@ Do not narrate discovery ("on-device testing surfaced that," "it turned out," "w
 
 ## Step 5b: Word-count pass
 
-Before formatting links, count the words in every bullet (excluding the label and links) and in the headline. Any bullet over 12 words or headline over 18 gets cut to fit, in this order: drop quoted UI labels and surface lists ("in scanner and web"), drop the "so" clause if the noun phrase implies it, drop the second sub-item of a cluster, drop adjectives. If the bullet still does not fit, the item is too small to report; cut the whole bullet. Do not skip this pass. Drafts that skip it come out at double the target length and the author trims them by hand.
+Before formatting links, count the words in every bullet (excluding the label and links) and in the headline. Any bullet over 8 words or headline over 18 gets cut to fit, in this order: drop the "so" clause, drop quoted UI labels and surface lists ("in scanner and web"), drop the second sub-item of a cluster, drop adjectives. If the bullet still does not fit, the item is too small to report; cut the whole bullet. Do not skip this pass. Drafts that skip it come out at double the target length and the author trims them by hand.
 
 ## Step 6: Links
 
@@ -180,18 +184,17 @@ Week ending {FRIDAY_DATE}
 *This week:* <one sentence or fragment, ≤18 words, stating the week's top outcome or current state across projects>.
 
 *{Project Name}*
-- Shipped: <outcome and why> <link>
-- In progress: <outcome and why> <link>
-- Blocked: <outcome and why; what would unblock> <link>
-- Risk: <situation and why it matters; what would resolve it>
+- Shipped: <outcome> <link>
+- In progress: <outcome> <link>
+- Blocked: <outcome; what would unblock> <link>
 - <plain verb, no label: handoff/collaboration/advisory item> <optional link>
 
 *{Project Name}*
-- Shipped: <outcome and why> <link>
+- Shipped: <outcome> <link>
 
 *Other*
-- <verb> <outcome and why> <link>
-- <verb> <outcome and why>
+- <verb> <outcome> <link>
+- <verb> <outcome>
 ```
 
 Omit empty sections. If the week was quiet, write one honest sentence under "This week" and stop.
@@ -203,8 +206,9 @@ Omit empty sections. If the week was quiet, write one honest sentence under "Thi
 - Markdown link syntax `[text](url)`, never Slack's `<url|text>` syntax
 - Cut filler, not substance. Every clause carries a number, consequence, or name. Cluster related PRs. Drop trivia. Every bullet is one line; at most one second sentence in the whole report (Step 5).
 - Target 6–8 bullets total, 2–4 per section. If the draft runs longer, cut whole bullets (weakest first), not just their detail.
-- Hard caps: 12 words per bullet before links, 6 of them in the "so" clause, 18 words in the headline. Run the Step 5b word-count pass before output.
-- Every item pairs what changed with the consequence that makes it matter, folded into the same bullet (usually a "so" clause). If you can't state the consequence, cut the item. No separate "Why it matters" line.
+- Hard caps: 8 words per bullet before links (label and `(with X)` credits excluded), at most 4 of them in a "so" clause, 18 words in the headline. Run the Step 5b word-count pass before output.
+- No `Risk:` bullets and no risks in the headline (Step 4).
+- Every item names what changed so that the consequence is implied. Add a "so" clause only when it is not. If the item has no consequence the audience cares about, cut the item. No separate "Why it matters" line.
 - Headline: one sentence or fragment, ≤18 words. A colon-list of the 2–3 focus outcomes beats prose ("Focus was X: A, B, and C."). If the user named a focus in Step 0, lead with it. Openers Ben uses: "Focus was X.", "Focused on X.", "Progress on X.", or a plain statement of current state ("Badge-tap scanner sign-in now works end-to-end on the handheld."). State the outcome, not a list of activities.
 - Use precise domain language — name the product behavior, decision, or migration shape. Code-level mechanism (flags, env vars, policy names, library commands) belongs in the PR, not the post (Step 5).
 - Voice per the writing rules in `~/.claude/CLAUDE.md`, applied in full. Also cut utilize, significant, successfully, facilitate, various, "a number of", "in order to", and words that grade the work ("critical," "the real fix," "the important part"). For this channel, also skip manager/corporate idioms ("heads-down," "drove the call," "punt," "circle back") and verification narration ("Verified via QA," "reviewed with X," lint/test claims); the post asserts outcomes.
