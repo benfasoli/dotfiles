@@ -15,12 +15,18 @@ export PYTHONDONTWRITEBYTECODE=1
 # disable autocd
 unsetopt AUTO_CD
 
+# keep one copy of each entry, because .zprofile sources this file a second time
+typeset -gU path PATH fpath
+
 # preempt PATH with brew installs
 eval "$(/opt/homebrew/bin/brew shellenv)"
 export C_INCLUDE_PATH="/opt/homebrew/opt/python3/Frameworks/Python.framework/Headers"
 
 # preempt PATH with user-scoped installs
 export PATH="$HOME/.local/bin:$PATH"
+
+# append brew's unversioned pip and python, which `aws codeartifact login --tool pip` needs
+export PATH="$PATH:/opt/homebrew/opt/python3/libexec/bin"
 
 # source per-machine overrides if present
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local

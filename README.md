@@ -22,6 +22,10 @@ On a brand-new Mac, run these steps in order:
    ```bash
    make brew
    ```
+1. Open OrbStack once. On first launch it links the `docker` CLI into `/usr/local/bin`. Until then, `docker` is not on `PATH`.
+   ```bash
+   open -a OrbStack
+   ```
 1. Install [`uv`](https://github.com/astral-sh/uv) (Python toolchain)
    ```bash
    curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -47,7 +51,7 @@ make install
 Re-run a single tool's links after editing:
 
 ```bash
-make zsh      # links .zshrc, .zshenv, and starship.toml
+make zsh      # links .zshrc, .zshenv, .zprofile, and starship.toml
 make git
 make vim
 make claude   # links CLAUDE.md, settings.json, hooks, and every skill in skills/
@@ -72,3 +76,5 @@ gitignored. Put machine- or host-specific exports, aliases, or PATH tweaks there
 to keep them out of the tracked config. Use `~/.zshenv.local` for anything that
 must be set for non-interactive shells (environment variables picked up by
 launch agents, build tools, etc.).
+
+`~/.zprofile` sources `~/.zshenv` a second time in login shells, because `/etc/zprofile` runs `path_helper` after `.zshenv` and moves `/usr/bin` ahead of the Homebrew entries. `~/.zshenv.local` therefore runs twice in a login shell, so keep it safe to run twice.

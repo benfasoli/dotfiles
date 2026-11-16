@@ -14,8 +14,9 @@ endef
 install: zsh git vim claude copilot k9s
 
 zsh:
-	ln -sfn $(DOTFILES)/home/.zshrc  $(HOME)/.zshrc
-	ln -sfn $(DOTFILES)/home/.zshenv $(HOME)/.zshenv
+	ln -sfn $(DOTFILES)/home/.zshrc    $(HOME)/.zshrc
+	ln -sfn $(DOTFILES)/home/.zshenv   $(HOME)/.zshenv
+	ln -sfn $(DOTFILES)/home/.zprofile $(HOME)/.zprofile
 	mkdir -p $(HOME)/.config
 	ln -sfn $(DOTFILES)/home/.config/starship.toml $(HOME)/.config/starship.toml
 
