@@ -1,8 +1,8 @@
 # dotfiles
 
-Personal macOS development environment: shell, git, vim, terminal, Claude Code,
-GitHub Copilot, and K9s configuration, kept in version control and symlinked
-into `$HOME` by a single `make install`.
+Personal macOS development environment: shell, Starship prompt, git, vim,
+terminal, Claude Code, GitHub Copilot, and K9s configuration, kept in version
+control and symlinked into `$HOME` by a single `make install`.
 
 ## Fresh machine setup
 
@@ -47,7 +47,7 @@ make install
 Re-run a single tool's links after editing:
 
 ```bash
-make zsh
+make zsh      # links .zshrc, .zshenv, and starship.toml
 make git
 make vim
 make claude   # links CLAUDE.md, settings.json, hooks, and every skill in skills/
