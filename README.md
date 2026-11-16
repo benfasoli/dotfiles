@@ -27,8 +27,7 @@ On a brand-new Mac, run these steps in order:
    curl -LsSf https://astral.sh/uv/install.sh | sh
    ```
 1. [Generate SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and configure GitHub auth
-1. Open Terminal → Settings. Drag `One Dark.terminal` onto the Profiles list and set it as default.
-1. Set terminal font to Fira Code Nerd Font.
+1. Open Terminal → Settings. Drag `One Dark.terminal` onto the Profiles list and set it as default. The profile sets the font to FiraCode Nerd Font Regular 11 and the line spacing to 0.8. `make brew` installs the font.
 1. Open System Settings → Keyboard. Set key repeat rate to fast, delay until repeat to short.
 1. Open System Settings → Trackpad. Enable tap to click.
 1. Open System Settings → Desktop & Dock. Disable "Show recent applications in Dock."
