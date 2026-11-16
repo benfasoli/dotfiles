@@ -43,4 +43,4 @@ k9s:
 	ln -sfn "$(DOTFILES)/home/Library/Application Support/k9s/config.yaml" "$(HOME)/Library/Application Support/k9s/config.yaml"
 
 brew:
-	brew bundle --file=$(DOTFILES)/Brewfile
+	brew bundle --file=$(CURDIR)/Brewfile
