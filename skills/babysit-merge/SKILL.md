@@ -12,7 +12,8 @@ while every gate below remains satisfied and no outstanding discussion would rea
 from another commit or a human decision.
 
 This workflow supports same-repository pull requests only. Do not use it for fork pull requests.
-Do not rebase, force-push, delete the branch, enable auto-merge, or bypass branch protection.
+Do not rebase, force-push, enable auto-merge, or bypass branch protection. Do not run commands to
+delete local or remote branches.
 
 ## Establish the deadline
 
@@ -184,16 +185,18 @@ non-recoverable failures.
 ### 5. Squash-merge and confirm
 
 Check the deadline. Run `gh pr merge <number> --squash` for the current PR, guarding the expected
-head commit when the installed `gh` version supports it. Do not pass branch deletion, auto-merge,
+head commit when the installed `gh` version supports it. Do not pass `--delete-branch`, auto-merge,
 or administrator-bypass options. Do not answer prompts by enabling auto-merge.
+
+GitHub may automatically delete the remote head branch after merging. Do not treat this setting
+as a merge blocker or change it.
 
 If GitHub rejects the attempt because the target branch or checks advanced, re-read state and loop
 through target incorporation, CI, and the fresh final gate within the deadline. Stop rather than
 retrying when rejection is due to policy, permission, approval, or a substantive check failure.
 
 After a successful command, query the PR again and require state `MERGED` with a non-null merge
-timestamp. Report the squash merge commit when GitHub provides it. Do not delete the local or
-remote branch.
+timestamp. Report the squash merge commit when GitHub provides it.
 
 ## Outcomes
 
