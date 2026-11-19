@@ -1,6 +1,6 @@
 ---
 name: babysit-merge
-description: Safely update, validate, and squash-merge a human-approved same-repository pull request with no worthwhile outstanding feedback.
+description: Update, validate, and squash-merge a human-approved same-repository pull request, including the first unmerged member of a native GitHub stack.
 ---
 
 # Babysit merge
@@ -61,10 +61,19 @@ Perform every preflight check before changing local or remote state:
 10. Read the complete, paginated PR conversation and every review thread, including all comments,
     authors, timestamps, paths, positions, outdated status, and resolution status. Apply the
     outstanding-question judgment below. Do not proceed if it finds a blocking or ambiguous item.
+11. Check native stack membership. For a stack member, apply the scope checks below.
 
 Use complete API pagination for reviews, review threads, review comments, and conversation
 comments; summary fields alone are not sufficient. Do not mutate the branch if any preflight
 requirement fails.
+
+### Native stack scope
+
+Use the [Stacks API](https://docs.github.com/en/pull-requests/reference/stacked-pull-requests-apis-and-webhooks) to read membership and the ordered stack detail. Record the stack number, target branch, and ordered PR numbers. Require the current PR to be the first unmerged member and to target the stack's target branch. A lower PR that is closed without merging still blocks this workflow. The native merge API includes open PRs below the selected PR, so do not select a higher member to merge multiple PRs. Keep every other member in the stack.
+
+Check that the target allows a direct squash merge. Stop if it requires a merge queue or disallows squash. Honor any rollout prerequisites for the selected PR; a merged prerequisite is not necessarily deployed.
+
+Recheck membership after each push and CI wait, and immediately before submitting the merge. Stop if the stack scope or target changes. Only update the checked-out branch. Do not edit stack membership, update other branches, or prevent GitHub from retargeting the remaining members after the merge.
 
 ## Judge outstanding questions
 
@@ -184,9 +193,17 @@ non-recoverable failures.
 
 ### 5. Squash-merge and confirm
 
-Check the deadline. Run `gh pr merge <number> --squash` for the current PR, guarding the expected
-head commit when the installed `gh` version supports it. Do not pass `--delete-branch`, auto-merge,
-or administrator-bypass options. Do not answer prompts by enabling auto-merge.
+Check the deadline. For a standalone PR, run `gh pr merge <number> --squash`, guarding the expected head commit when the installed `gh` version supports it. Do not pass `--delete-branch`, auto-merge, or administrator-bypass options. Do not answer prompts by enabling auto-merge.
+
+For a native stack member, use the [asynchronous merge endpoint](https://docs.github.com/en/rest/pulls/pulls?apiVersion=2026-03-10#merge-a-pull-request-asynchronously) for the selected PR only. Validate the owner, repository, PR number, and head SHA before using them in the command. Do not use the top PR's number unless it is the selected PR.
+
+```sh
+gh api --method PUT 'repos/OWNER/REPO/pulls/NUMBER/merge-async' \
+  -H 'X-GitHub-Api-Version: 2026-03-10' \
+  -f 'sha=EXPECTED_HEAD_SHA' -f 'merge_method=squash' -f 'merge_action=direct_merge'
+```
+
+For a pending response, require a valid operation UUID and confirmation of the requested head SHA, method, and action. Poll only that operation's status endpoint within the original deadline. Honor `Retry-After` and back off between reads. If GitHub reports an existing operation, follow it only if its head SHA, method, and action match exactly. If acceptance is uncertain, check the PR and operation status rather than submitting again. Treat an enqueued result as queued, not merged; do not start a second operation.
 
 GitHub may automatically delete the remote head branch after merging. Do not treat this setting
 as a merge blocker or change it.
@@ -195,8 +212,7 @@ If GitHub rejects the attempt because the target branch or checks advanced, re-r
 through target incorporation, CI, and the fresh final gate within the deadline. Stop rather than
 retrying when rejection is due to policy, permission, approval, or a substantive check failure.
 
-After a successful command, query the PR again and require state `MERGED` with a non-null merge
-timestamp. Report the squash merge commit when GitHub provides it.
+After a successful command, query the PR again and require state `MERGED` with a non-null merge timestamp. For a stack, also verify that the ordered membership is unchanged and that higher PRs that were open remain open. GitHub may retarget or rebase them. Report the squash merge commit when GitHub provides it.
 
 ## Outcomes
 
